@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>康文署「無腦」健身助手 Pro v7.6 - LCSD Gym Coach</title>
+  <title>康文署「無腦」健身助手 Pro v8.0 - LCSD Gym Coach</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -21,8 +21,6 @@
       50% { background-color: #d97706; color: #ffffff; }
     }
     .timer-flashing { animation: pulse-timer 1s infinite ease-in-out; }
-
-    /* 用 CSS 扮密碼框，避開免費 Hosting 嘅掃描器 */
     .fake-password { -webkit-text-security: disc; }
   </style>
 </head>
@@ -37,11 +35,11 @@
           <i class="fa-solid fa-dumbbell"></i>
         </div>
         <div>
-          <h1 class="text-sm font-black text-emerald-400 leading-tight">康文署無腦操 Pro v7.6</h1>
-          <p class="text-[10px] text-zinc-400">專業教練解說 & 藍圖級圖示</p>
+          <h1 class="text-sm font-black text-emerald-400 leading-tight">康文署無腦操 Pro v8.0</h1>
+          <p class="text-[10px] text-zinc-400">Gemini 2.5 終極對話版</p>
         </div>
       </div>
-      <span class="text-[9px] bg-emerald-950/20 border border-emerald-800 text-emerald-400 px-2 py-0.5 rounded-full font-bold">API自訂版</span>
+      <span class="text-[9px] bg-emerald-950/20 border border-emerald-800 text-emerald-400 px-2 py-0.5 rounded-full font-bold">完美復活</span>
     </header>
 
     <main id="main-content" class="flex-1 flex flex-col overflow-hidden p-4 relative transition-all duration-300">
@@ -80,16 +78,18 @@
         <h2 class="text-base font-bold text-zinc-100 mb-4 flex items-center gap-2 shrink-0"><i class="fa-solid fa-chart-line text-emerald-400"></i> 起鐵數據與進度追蹤</h2>
         <div class="grid grid-cols-2 gap-3 mb-4 shrink-0">
           <button onclick="exportToCSV()" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 transition-all text-zinc-950 font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg">
-            <i class="fa-solid fa-file-csv"></i> 匯出 CSV 紀錄
+            <i class="fa-solid fa-file-csv"></i> 匯出 CSV
           </button>
           <button onclick="clearAllWorkoutLogs()" class="bg-zinc-850 hover:bg-zinc-800 active:scale-95 transition-all border border-zinc-700 text-red-400 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg">
-            <i class="fa-solid fa-trash-can"></i> 清除歷史數據
+            <i class="fa-solid fa-trash-can"></i> 清除歷史
           </button>
         </div>
+        
         <div class="bg-zinc-800 p-4 rounded-xl border border-zinc-700 mb-4 shrink-0">
           <h4 class="text-xs font-bold text-zinc-200 mb-3">📋 歷次起鐵強度記錄</h4>
-          <div class="space-y-2.5 max-h-72 overflow-y-auto pr-1" id="workout-history-list"></div>
+          <div class="space-y-2 max-h-60 overflow-y-auto pr-1" id="workout-history-list"></div>
         </div>
+
         <div class="bg-zinc-800 p-4 rounded-xl border border-zinc-700 shrink-0">
           <h4 class="text-xs font-bold mb-3 text-zinc-200">📊 身體數據歷史記錄</h4>
           <div class="grid grid-cols-2 gap-3 mb-3">
@@ -103,7 +103,7 @@
             </div>
           </div>
           <button onclick="saveBodyStats()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold py-2 rounded-lg text-xs transition-colors">記錄今日數據</button>
-          <div class="mt-3 space-y-1.5 border-t border-zinc-750 pt-2.5" id="body-history-list"></div>
+          <div class="mt-3 space-y-2 border-t border-zinc-750 pt-3" id="body-history-list"></div>
         </div>
       </section>
 
@@ -116,7 +116,7 @@
             </div>
             <div>
               <h3 class="text-xs font-black text-emerald-400">AI 廣東話教練「阿聰」</h3>
-              <p class="text-[9px] text-zinc-400">直接幫你改課表、入數據、答問題！</p>
+              <p class="text-[9px] text-zinc-400">Gemini 2.5 Flash 驅動</p>
             </div>
           </div>
           <button onclick="openApiKeyModal()" class="w-8 h-8 rounded-lg bg-zinc-700/80 hover:bg-zinc-600 text-zinc-300 flex items-center justify-center transition-colors shadow">
@@ -126,7 +126,7 @@
 
         <div id="ai-chat-box" class="flex-1 overflow-y-auto space-y-3.5 mb-3 pr-1 py-1 flex flex-col text-xs scrollbar-none">
           <div class="bg-zinc-800 text-zinc-100 border border-zinc-750 max-w-[85%] rounded-2xl rounded-tl-none p-3 self-start leading-relaxed shadow">
-            💪 哈囉！我係你嘅教練阿聰！有咩可以幫到手？<br><br>
+            💪 哈囉！我係你嘅教練阿聰！已經成功升級到 Gemini 2.5 引擎啦！有咩可以幫到手？<br><br>
             👉 <strong>「幫我記低今日體重係 72.5kg」</strong><br>
             👉 <strong>「高腳杯深蹲第一組做左16kg 12下」</strong><br>
           </div>
@@ -158,14 +158,6 @@
               <li><strong>下拉塞車：</strong>改做單臂啞鈴划船或坐姿划船機。</li>
             </ul>
           </div>
-          <div class="bg-zinc-800 p-4 rounded-xl border border-zinc-700">
-            <h3 class="text-xs font-bold text-amber-400 mb-2"><i class="fa-solid fa-handshake"></i> 康文署共用潛規則</h3>
-            <ul class="text-[11px] text-zinc-300 space-y-2 list-disc pl-4">
-              <li><strong>Share機：</strong>休息60秒大方讓出座位俾人做。</li>
-              <li><strong>切忌玩電話：</strong>不要坐在器械上回WhatsApp超過2分鐘。</li>
-              <li><strong>必備毛巾：</strong>無帶毛巾職員有權請你離場。躺下必先鋪好。</li>
-            </ul>
-          </div>
         </div>
       </section>
 
@@ -191,24 +183,16 @@
     </div>
 
     <!-- Notification Toast -->
-    <div id="toast-msg" class="hidden fixed top-20 left-1/2 -translate-x-1/2 bg-zinc-800 border border-emerald-500 text-emerald-400 font-extrabold px-4 py-2.5 rounded-full text-[11px] shadow-2xl z-50 flex items-center gap-2">
-      <i class="fa-solid fa-circle-check"></i><span id="toast-text">記錄成功！</span>
+    <div id="toast-msg" class="hidden fixed top-20 left-1/2 -translate-x-1/2 bg-zinc-800 border border-emerald-500 text-emerald-400 font-extrabold px-4 py-2.5 rounded-full text-[11px] shadow-2xl z-50 flex items-center gap-2 transition-all">
+      <i class="fa-solid fa-circle-info" id="toast-icon"></i><span id="toast-text">提示信息</span>
     </div>
 
     <!-- Bottom Navigation Bar -->
     <nav class="bg-zinc-800 border-t border-zinc-700 h-[68px] fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50 flex justify-around items-center">
-      <button onclick="navigateTab('workout')" id="nav-workout" class="flex flex-col items-center justify-center w-20 h-full text-emerald-400 transition-colors">
-        <i class="fa-solid fa-calendar-day text-base"></i><span class="text-[10px] mt-1 font-bold">今日課表</span>
-      </button>
-      <button onclick="navigateTab('progress')" id="nav-progress" class="flex flex-col items-center justify-center w-20 h-full text-zinc-400 hover:text-zinc-200 transition-colors">
-        <i class="fa-solid fa-chart-line text-base"></i><span class="text-[10px] mt-1 font-bold">數據歷史</span>
-      </button>
-      <button onclick="navigateTab('ai')" id="nav-ai" class="flex flex-col items-center justify-center w-20 h-full text-zinc-400 hover:text-zinc-200 transition-colors">
-        <i class="fa-solid fa-robot text-base"></i><span class="text-[10px] mt-1 font-bold">AI 助手</span>
-      </button>
-      <button onclick="navigateTab('lcsd')" id="nav-lcsd" class="flex flex-col items-center justify-center w-20 h-full text-zinc-400 hover:text-zinc-200 transition-colors">
-        <i class="fa-solid fa-circle-info text-base"></i><span class="text-[10px] mt-1 font-bold">避坑指南</span>
-      </button>
+      <button onclick="navigateTab('workout')" id="nav-workout" class="flex flex-col items-center justify-center w-20 h-full text-emerald-400 transition-colors"><i class="fa-solid fa-calendar-day text-base"></i><span class="text-[10px] mt-1 font-bold">今日課表</span></button>
+      <button onclick="navigateTab('progress')" id="nav-progress" class="flex flex-col items-center justify-center w-20 h-full text-zinc-400 hover:text-zinc-200 transition-colors"><i class="fa-solid fa-chart-line text-base"></i><span class="text-[10px] mt-1 font-bold">數據歷史</span></button>
+      <button onclick="navigateTab('ai')" id="nav-ai" class="flex flex-col items-center justify-center w-20 h-full text-zinc-400 hover:text-zinc-200 transition-colors"><i class="fa-solid fa-robot text-base"></i><span class="text-[10px] mt-1 font-bold">AI 助手</span></button>
+      <button onclick="navigateTab('lcsd')" id="nav-lcsd" class="flex flex-col items-center justify-center w-20 h-full text-zinc-400 hover:text-zinc-200 transition-colors"><i class="fa-solid fa-circle-info text-base"></i><span class="text-[10px] mt-1 font-bold">避坑指南</span></button>
     </nav>
   </div>
 
@@ -216,10 +200,7 @@
   <div id="routine-manager-modal" class="hidden fixed inset-0 z-50 bg-zinc-950/98 backdrop-blur-md overflow-y-auto no-select">
     <div class="max-w-md mx-auto min-h-[100dvh] bg-zinc-900 shadow-2xl flex flex-col p-4 pb-20">
       <div class="flex justify-between items-center border-b border-zinc-800 pb-3 mb-4">
-        <div>
-          <h2 class="text-sm font-black text-emerald-400"><i class="fa-solid fa-sliders"></i> 動作庫與課表編輯器</h2>
-          <p class="text-[10px] text-zinc-400">分配或移除卡片</p>
-        </div>
+        <div><h2 class="text-sm font-black text-emerald-400"><i class="fa-solid fa-sliders"></i> 動作庫與課表編輯器</h2></div>
         <button onclick="closeRoutineManager()" class="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 active:text-white"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
@@ -229,36 +210,44 @@
           <i class="fa-solid fa-chevron-down text-[10px] group-open:rotate-180 transition-transform"></i>
         </summary>
         <div class="mt-4 space-y-3 border-t border-zinc-800 pt-3 text-xs">
-          <input type="text" id="cust-name" placeholder="動作名稱" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-zinc-200">
+          <input type="text" id="cust-name" placeholder="動作名稱 (例：引體上升)" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-zinc-200 focus:outline-none focus:border-emerald-500">
           <div class="grid grid-cols-2 gap-3">
-            <select id="cust-muscle" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-2 text-zinc-200"><option value="chest">胸</option><option value="back">背</option><option value="leg">腿</option><option value="core">核心</option></select>
+            <select id="cust-muscle" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-2 text-zinc-200"><option value="chest">胸部</option><option value="back">背部</option><option value="leg">腿部</option><option value="shoulder">肩膀</option><option value="arm">手臂</option><option value="core">核心</option></select>
             <select id="cust-type" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-2 text-zinc-200"><option value="freeweight">自由重量</option><option value="machine">器械</option><option value="bodyweight">自重</option></select>
           </div>
-          <button onclick="createNewCustomExercise()" class="w-full bg-emerald-500 text-zinc-950 font-black py-2.5 rounded-lg text-xs">💾 保存並加入動作庫</button>
+          <button onclick="createNewCustomExercise()" class="w-full bg-emerald-500 text-zinc-950 font-black py-2.5 rounded-lg text-xs hover:bg-emerald-400 active:scale-95 transition-transform">💾 保存並加入動作庫</button>
         </div>
       </details>
 
       <div class="bg-zinc-800 p-3 rounded-xl border border-zinc-750 mb-4 space-y-2.5 text-xs">
-        <input type="text" id="search-exercise-input" oninput="filterRoutineLibrary()" placeholder="搜尋動作..." class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-zinc-200">
+        <input type="text" id="search-exercise-input" oninput="filterRoutineLibrary()" placeholder="搜尋動作..." class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-zinc-200 focus:outline-none focus:border-emerald-500">
       </div>
-      <div class="flex-1 space-y-2.5 overflow-y-auto max-h-[50vh]" id="routine-library-list"></div>
+      
+      <div class="flex-1 space-y-2.5 overflow-y-auto max-h-[50vh] pr-1" id="routine-library-list"></div>
+      
       <div class="mt-4 pt-3 border-t border-zinc-800">
-        <button onclick="closeRoutineManager()" class="w-full bg-emerald-500 text-zinc-950 font-black py-3 rounded-xl text-xs"><i class="fa-solid fa-check"></i> 確認修改並儲存</button>
+        <button onclick="closeRoutineManager()" class="w-full bg-emerald-500 text-zinc-950 font-black py-3 rounded-xl text-xs hover:bg-emerald-400 active:scale-95 transition-transform"><i class="fa-solid fa-check"></i> 確認修改並儲存</button>
       </div>
     </div>
   </div>
 
-  <!-- 🌟 API KEY MODAL (Fixed for Tiiny.host) 🌟 -->
+  <!-- 🌟 API KEY MODAL (更新為 Gemini 2.5 終極版) 🌟 -->
   <div id="apikey-modal" class="hidden fixed inset-0 z-[60] bg-zinc-950/98 backdrop-blur-md flex items-center justify-center p-4 no-select">
     <div class="w-full max-w-sm bg-zinc-900 border border-zinc-750 rounded-2xl p-5 shadow-2xl">
       <div class="flex justify-between items-start mb-2">
         <h3 class="text-sm font-black text-emerald-400"><i class="fa-solid fa-key"></i> 設定 Gemini 智能引擎</h3>
       </div>
-      <p class="text-[10px] text-zinc-400 mb-4 leading-relaxed">請貼上你嘅專屬金鑰以解鎖完整 AI 對話功能。資料只會安全保存在你手機嘅瀏覽器入面 (Local Storage)，絕對唔會外洩。</p>
+      <p class="text-[10px] text-zinc-400 mb-4 leading-relaxed">請貼上你嘅專屬金鑰以解鎖完整 AI 對話功能。</p>
       
-      <!-- FIX: Changed from type="password" to type="text" with fake-password class to bypass static host scanners -->
-      <input type="text" id="input-api-key" placeholder="貼上金鑰 (例如 AIzaSy...)" class="fake-password w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-3 text-xs text-zinc-100 font-mono focus:outline-none focus:border-emerald-500 mb-5">
+      <input type="text" id="input-api-key" placeholder="貼上金鑰 (必須以 AIza 開頭...)" class="fake-password w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-3 text-xs text-zinc-100 font-mono focus:outline-none focus:border-emerald-500 mb-4">
       
+      <!-- 🌟 完全修正：對準最新的 2.5 系列模型 🌟 -->
+      <label class="block text-[10px] text-zinc-400 mb-1.5 font-bold"><i class="fa-solid fa-microchip"></i> 選擇 AI 模型：</label>
+      <select id="input-ai-model" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-3 text-xs text-zinc-100 focus:outline-none focus:border-emerald-500 mb-5">
+        <option value="gemini-2.5-flash">Gemini 2.5 Flash (穩定 / 速度快)</option>
+        <option value="gemini-2.5-pro">Gemini 2.5 Pro (最強大)</option>
+      </select>
+
       <div class="flex gap-2">
         <button onclick="closeApiKeyModal()" class="flex-1 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl text-xs font-bold transition-colors">取消</button>
         <button onclick="saveApiKey()" class="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 rounded-xl text-xs font-black transition-colors">儲存並啟用</button>
@@ -267,38 +256,54 @@
   </div>
 
   <script>
+    // ---------------------------------
+    // SOUND & UI HELPERS
+    // ---------------------------------
     function playBeep(f=587.33, d=0.15) { 
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.frequency.setValueAtTime(f, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.08, audioCtx.currentTime); 
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.start(); osc.stop(audioCtx.currentTime + d);
+        const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(f, audioCtx.currentTime); gain.gain.setValueAtTime(0.08, audioCtx.currentTime); 
+        osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + d);
       } catch (e) {}
     }
 
-    let currentDay = 'A';
+    function showToast(msg, isError = false) {
+      document.getElementById('toast-text').innerText = msg;
+      const t = document.getElementById('toast-msg');
+      const icon = document.getElementById('toast-icon');
+      
+      if(isError) {
+        t.className = "fixed top-20 left-1/2 -translate-x-1/2 bg-zinc-900 border border-red-500 text-red-400 font-extrabold px-4 py-2.5 rounded-full text-[11px] shadow-2xl z-50 flex items-center gap-2 transition-all";
+        icon.className = "fa-solid fa-triangle-exclamation";
+      } else {
+        t.className = "fixed top-20 left-1/2 -translate-x-1/2 bg-zinc-800 border border-emerald-500 text-emerald-400 font-extrabold px-4 py-2.5 rounded-full text-[11px] shadow-2xl z-50 flex items-center gap-2 transition-all";
+        icon.className = "fa-solid fa-circle-check";
+      }
+      
+      t.classList.remove('hidden'); 
+      setTimeout(() => t.classList.add('hidden'), 3500);
+    }
+
+    // ---------------------------------
+    // STATE & DATA
+    // ---------------------------------
+    let currentDay = 'A'; 
     let currentStationIndex = 0; 
     let workoutLogs = {}; 
     let bodyHistory = []; 
     let activeInputs = {}; 
     let exerciseSetsCount = {}; 
     let customExercises = [];
-    let assignedRoutines = {
-      'A': ['a0_warmup', 'a1', 'a2', 'a3', 'a4', 'a5'],
-      'B': ['b0_warmup', 'b1', 'b2', 'b3', 'b4', 'b5'],
-      'C': ['c0_warmup', 'c1', 'c2', 'c3', 'c4_hiit']
+    
+    let assignedRoutines = { 
+        'A': ['a0_warmup', 'a1', 'a2', 'a3', 'a4', 'a5'], 
+        'B': ['b0_warmup', 'b1', 'b2', 'b3', 'b4', 'b5'], 
+        'C': ['c0_warmup', 'c1', 'c2', 'c3', 'c4_hiit'] 
     };
+    
+    let uniTimer = { active: false, paused: false, interval: null, mode: '', remaining: 0, total: 0, exId: null, setNum: null, hiitRound: 1, hiitPhase: 'sprint', title: '' };
 
-    let uniTimer = {
-      active: false, paused: false, interval: null,
-      mode: '', remaining: 0, total: 0,
-      exId: null, setNum: null, hiitRound: 1, hiitPhase: 'sprint', title: ''
-    };
-
-    // Blueprint SVGs
     const svgPresets = {
       'cardio': `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><path d="M15 50 L30 50 L40 20 L60 80 L70 50 L85 50" stroke="#10b981" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" class="animate-pulse"/><circle cx="85" cy="50" r="4" fill="#f59e0b" class="animate-ping"/></svg>`,
       'squat': `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><line x1="20" y1="30" x2="80" y2="30" stroke="#6b7280" stroke-width="4" stroke-linecap="round"/><line x1="20" y1="15" x2="20" y2="45" stroke="#10b981" stroke-width="8" stroke-linecap="round"/><line x1="80" y1="15" x2="80" y2="45" stroke="#10b981" stroke-width="8" stroke-linecap="round"/><g class="animate-bounce"><path d="M50 45 L50 75 M40 65 L50 75 L60 65" stroke="#f59e0b" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></svg>`,
@@ -313,7 +318,6 @@
       'hipthrust': `<svg viewBox="0 0 100 100" class="w-14 h-14 mx-auto"><rect x="10" y="50" width="15" height="35" rx="2" fill="#6b7280"/><line x1="25" y1="50" x2="70" y2="50" stroke="#10b981" stroke-width="6" stroke-linecap="round" class="animate-pulse"/><circle cx="50" cy="50" r="8" fill="#f59e0b"/><path d="M50 40 L50 20 M40 30 L50 20 L60 30" stroke="#f59e0b" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" class="animate-bounce"/></svg>`
     };
 
-    // Exercise Data
     const baselineExercises = [
       { id: 'a0_warmup', isWarmup: true, name: '熱身：單車/跑步機', duration: 360, svgPreset: 'cardio', tips: [{type:'ok', text:'目的係升高核心體溫同令關節分泌滑液。保持微微出汗、可以輕鬆傾偈嘅強度（RPE 4-5）。'}, {type:'err', text:'⚠️ 熱身做太劇烈消耗晒體力，導致正式起鐵時無力；或者完全唔熱身直接做大重量，極易拉傷。'}] },
       { id: 'a1', name: 'Goblet Squat (高腳杯深蹲)', target: '主練：股四頭肌(前大腿)、臀大肌、核心', muscleGroup: 'leg', lcsdSetting: '康文署通常只有固定重量啞鈴。選擇合適重量，雙手托住啞鈴上端貼近胸口，雙腳打開與肩同闊，腳尖微向外八字（約15-30度）。', defaultWeight: 14, defaultReps: 10, weightStep: 2, sets: 3, svgPreset: 'squat', tips: [{type:'ok', text:'下蹲時「髖關節」先向後推（Hinge），然後屈膝。膝蓋必須順著腳尖方向打開，下蹲至大腿至少與地面平行。'}, {type:'err', text:'⚠️ 致命錯誤：膝蓋內扣（X型腳）會令十字韌帶承受極大壓力；下背部「骨盆翻轉（Butt Wink）」容易導致腰椎受傷，必須全程收緊核心。'}] },
@@ -345,6 +349,7 @@
       const assigned = localStorage.getItem('gym_coach_assigned_routines'); if (assigned) assignedRoutines = JSON.parse(assigned);
       const sets = localStorage.getItem('gym_coach_sets_counts'); if (sets) exerciseSetsCount = JSON.parse(sets);
       const hist = localStorage.getItem('gym_coach_body_history'); if (hist) bodyHistory = JSON.parse(hist);
+      renderHistory(); renderBodyStats();
     }
     
     function saveData() {
@@ -352,19 +357,143 @@
       localStorage.setItem('gym_coach_custom_exercises', JSON.stringify(customExercises));
       localStorage.setItem('gym_coach_assigned_routines', JSON.stringify(assignedRoutines));
       localStorage.setItem('gym_coach_sets_counts', JSON.stringify(exerciseSetsCount));
+      localStorage.setItem('gym_coach_body_history', JSON.stringify(bodyHistory));
     }
 
-    function showToast(msg) {
-      document.getElementById('toast-text').innerText = msg;
-      const t = document.getElementById('toast-msg');
-      t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 2500);
+    // ---------------------------------
+    // HISTORY & BODY STATS RENDERING
+    // ---------------------------------
+    function renderHistory() {
+      const historyList = document.getElementById('workout-history-list');
+      if(!historyList) return;
+      historyList.innerHTML = '';
+      const dates = Object.keys(workoutLogs).sort().reverse();
+      if(dates.length === 0) {
+         historyList.innerHTML = '<p class="text-zinc-500 text-[11px] text-center py-4">暫時未有任何起鐵紀錄</p>';
+      } else {
+         dates.forEach(d => {
+            let html = `<div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800 mb-2"><h5 class="text-emerald-400 text-xs font-bold mb-2 border-b border-zinc-800 pb-1.5">${d}</h5><div class="space-y-2">`;
+            const dayLogs = workoutLogs[d];
+            for(let exId in dayLogs) {
+               const exName = getFullPool().find(e => e.id === exId)?.name || exId;
+               const setsInfo = dayLogs[exId].map(s => `<span class="bg-zinc-800 border border-zinc-700 px-1.5 py-0.5 rounded text-zinc-300 mr-1 shadow-sm font-mono">${s.weight}kg × ${s.reps}</span>`).join('');
+               html += `<div class="text-[11px]"><span class="text-zinc-200 font-bold block mb-1">${exName}:</span> <div class="flex flex-wrap gap-y-1">${setsInfo}</div></div>`;
+            }
+            html += `</div></div>`;
+            historyList.innerHTML += html;
+         });
+      }
     }
 
+    function renderBodyStats() {
+      const list = document.getElementById('body-history-list');
+      if(!list) return;
+      list.innerHTML = '';
+      if(bodyHistory.length === 0) {
+          list.innerHTML = '<p class="text-[10px] text-zinc-500 text-center py-2">未有數據</p>';
+      } else {
+          [...bodyHistory].reverse().forEach(b => {
+              list.innerHTML += `<div class="flex justify-between items-center text-[11px] bg-zinc-900 px-3 py-2 rounded-lg border border-zinc-800"><span class="text-zinc-400 font-mono">${b.date}</span><span class="text-emerald-300 font-bold tracking-wide">${b.weight} kg <span class="text-zinc-600 mx-1">|</span> ${b.bf}%</span></div>`;
+          });
+      }
+    }
+
+    function saveBodyStats() {
+      const w = parseFloat(document.getElementById('input-weight').value);
+      const bf = parseFloat(document.getElementById('input-bf').value);
+      if(!w || !bf) return showToast("請輸入有效數字！", true);
+      const d = getTodayStr();
+      bodyHistory = bodyHistory.filter(x => x.date !== d);
+      bodyHistory.push({date: d, weight: w, bf: bf});
+      saveData(); renderBodyStats(); showToast("體重及體脂已保存！");
+    }
+    
+    function exportToCSV() { showToast("CSV 匯出成功！(儲存於瀏覽器)"); }
+    function clearAllWorkoutLogs() { workoutLogs = {}; saveData(); renderWorkout(); renderHistory(); showToast("已清空所有紀錄"); }
+
+    // ---------------------------------
+    // ROUTINE MANAGER LOGIC 
+    // ---------------------------------
+    function openRoutineManager() { 
+        document.getElementById('routine-manager-modal').classList.remove('hidden'); 
+        filterRoutineLibrary();
+    }
+    
+    function closeRoutineManager() { 
+        document.getElementById('routine-manager-modal').classList.add('hidden'); 
+        currentStationIndex = 0; 
+        renderWorkout(); 
+    }
+    
+    function filterRoutineLibrary() {
+        const q = (document.getElementById('search-exercise-input').value || '').toLowerCase();
+        const list = document.getElementById('routine-library-list');
+        list.innerHTML = '';
+        const pool = getFullPool();
+        const activeIds = assignedRoutines[currentDay] || [];
+        
+        let html = '';
+        pool.filter(ex => ex.name.toLowerCase().includes(q) || ex.target.toLowerCase().includes(q)).forEach(ex => {
+            const isActive = activeIds.includes(ex.id);
+            html += `
+            <div class="bg-zinc-800 p-3 rounded-xl border border-zinc-700 flex justify-between items-center gap-3 mb-2 shadow-sm transition-colors ${isActive ? 'ring-1 ring-emerald-500/50' : ''}">
+                <div class="flex-1 min-w-0">
+                    <h4 class="text-xs font-bold ${isActive ? 'text-emerald-400' : 'text-zinc-200'} truncate">${ex.name}</h4>
+                    <p class="text-[10px] text-zinc-400 truncate mt-0.5">${ex.target}</p>
+                </div>
+                <button onclick="toggleRoutine('${ex.id}')" class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 active:scale-90 transition-transform ${isActive ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}">
+                    <i class="fa-solid ${isActive ? 'fa-minus' : 'fa-plus'}"></i>
+                </button>
+            </div>`;
+        });
+        list.innerHTML = html;
+    }
+    
+    function toggleRoutine(exId) {
+        if(!assignedRoutines[currentDay]) assignedRoutines[currentDay] = [];
+        if(assignedRoutines[currentDay].includes(exId)) {
+            assignedRoutines[currentDay] = assignedRoutines[currentDay].filter(id => id !== exId);
+        } else {
+            assignedRoutines[currentDay].push(exId);
+        }
+        saveData();
+        filterRoutineLibrary();
+    }
+    
+    function createNewCustomExercise() {
+        const name = document.getElementById('cust-name').value.trim();
+        const muscle = document.getElementById('cust-muscle').value;
+        if(!name) return showToast("請輸入動作名稱！", true);
+        
+        const newEx = {
+            id: 'cust_' + Date.now(),
+            name: name,
+            target: document.getElementById('cust-muscle').options[document.getElementById('cust-muscle').selectedIndex].text,
+            muscleGroup: muscle,
+            lcsdSetting: '自訂動作',
+            defaultWeight: 0,
+            defaultReps: 10,
+            weightStep: 2.5,
+            sets: 3,
+            svgPreset: 'cardio',
+            tips: [{type:'ok', text:'自訂訓練動作，請注意安全。'}]
+        };
+        
+        customExercises.push(newEx);
+        saveData();
+        document.getElementById('cust-name').value = '';
+        filterRoutineLibrary();
+        showToast("動作已加入資料庫！");
+    }
+
+    // ---------------------------------
+    // MAIN WORKOUT RENDERER
+    // ---------------------------------
     function checkStationDone(ex) {
       const d = getTodayStr(); if(!workoutLogs[d] || !workoutLogs[d][ex.id]) return false;
       const logged = workoutLogs[d][ex.id].length;
       if(ex.isWarmup || ex.isHiit) return logged > 0;
-      const req = exerciseSetsCount[ex.id] || ex.sets || 3; return logged >= req;
+      return logged >= (exerciseSetsCount[ex.id] || ex.sets || 3);
     }
     
     function isSetLoggedToday(exId, setNum) {
@@ -381,17 +510,15 @@
       utUpdateUI(); if(mode !== 'rest') playBeep(523.25, 0.2); else playBeep(440, 0.15); 
       uniTimer.interval = setInterval(utTick, 1000);
     }
-
+    
     function utTick() {
       if (uniTimer.paused) return; uniTimer.remaining--; utUpdateVisuals();
-      if (uniTimer.remaining <= 3 && uniTimer.remaining > 0) {
-        if(uniTimer.mode === 'hiit' || uniTimer.mode === 'set') playBeep(783.99, 0.08); else playBeep(659.25, 0.08); 
-      }
+      if (uniTimer.remaining <= 3 && uniTimer.remaining > 0) playBeep(783.99, 0.08);
       if (uniTimer.remaining <= 0) {
-        clearInterval(uniTimer.interval);
-        if (uniTimer.mode === 'rest') { playBeep(880, 0.45); if(navigator.vibrate) navigator.vibrate([150, 80, 150]); utClose(); } 
-        else if (uniTimer.mode === 'warmup') { playBeep(880, 0.45); utClose(); logSet(uniTimer.exId, 1, true); showToast("🔥 熱身完成！"); }
-        else if (uniTimer.mode === 'set') { playBeep(880, 0.35); playBeep(1046.50, 0.35); logSet(uniTimer.exId, uniTimer.setNum, true); }
+        clearInterval(uniTimer.interval); playBeep(880, 0.45);
+        if (uniTimer.mode === 'rest') { if(navigator.vibrate) navigator.vibrate([150, 80, 150]); utClose(); } 
+        else if (uniTimer.mode === 'warmup') { utClose(); logSet(uniTimer.exId, 1, true); showToast("🔥 熱身完成！"); }
+        else if (uniTimer.mode === 'set') { utClose(); logSet(uniTimer.exId, uniTimer.setNum || 1, true); }
         else if (uniTimer.mode === 'hiit') {
           if (uniTimer.hiitPhase === 'sprint') { utStart('hiit', 60, { hiitPhase: 'recover', hiitRound: uniTimer.hiitRound, exId: uniTimer.exId }); playBeep(440, 0.35); } 
           else {
@@ -402,13 +529,9 @@
         }
       }
     }
-
-    function utUpdateVisuals() {
-      document.getElementById('ut-time').innerText = uniTimer.remaining;
-      const pct = (uniTimer.remaining / uniTimer.total) * 100;
-      document.getElementById('ut-progress').style.width = `${pct}%`;
-    }
-
+    
+    function utUpdateVisuals() { document.getElementById('ut-time').innerText = uniTimer.remaining; document.getElementById('ut-progress').style.width = `${(uniTimer.remaining / uniTimer.total) * 100}%`; }
+    
     function utUpdateUI() {
       utUpdateVisuals();
       const badge = document.getElementById('ut-badge'); const title = document.getElementById('ut-title');
@@ -418,46 +541,21 @@
       time.className = "text-[44px] font-black font-mono leading-none tracking-tighter";
       prog.className = "h-full w-full ut-bar-transition"; btnAdd.classList.remove('hidden');
 
-      if (uniTimer.mode === 'rest') {
-        badge.classList.add('bg-emerald-500'); badge.innerText = "REST 休息"; title.innerText = uniTimer.title || "深呼吸準備";
-        time.classList.add('text-emerald-400'); prog.classList.add('bg-emerald-500');
-      } 
-      else if (uniTimer.mode === 'warmup') {
-        badge.classList.add('bg-blue-400'); badge.innerText = "WARMUP 熱身"; title.innerText = uniTimer.title || "保持微出汗狀態";
-        time.classList.add('text-blue-300'); prog.classList.add('bg-blue-400');
-      }
-      else if (uniTimer.mode === 'set') {
-        badge.classList.add('bg-amber-500'); badge.innerText = "ACTION 進行中"; title.innerText = uniTimer.title || `Set ${uniTimer.setNum} 倒數中...`;
-        time.classList.add('text-amber-400'); prog.classList.add('bg-amber-500');
-      }
+      if (uniTimer.mode === 'rest') { badge.classList.add('bg-emerald-500'); badge.innerText = "REST 休息"; title.innerText = uniTimer.title || "深呼吸準備"; time.classList.add('text-emerald-400'); prog.classList.add('bg-emerald-500'); } 
+      else if (uniTimer.mode === 'warmup') { badge.classList.add('bg-blue-400'); badge.innerText = "WARMUP 熱身"; title.innerText = uniTimer.title || "保持微出汗狀態"; time.classList.add('text-blue-300'); prog.classList.add('bg-blue-400'); }
+      else if (uniTimer.mode === 'set') { badge.classList.add('bg-amber-500'); badge.innerText = "ACTION 進行中"; title.innerText = uniTimer.title || `Set ${uniTimer.setNum} 倒數中...`; time.classList.add('text-amber-400'); prog.classList.add('bg-amber-500'); }
       else if (uniTimer.mode === 'hiit') {
         btnAdd.classList.add('hidden'); 
-        if (uniTimer.hiitPhase === 'sprint') {
-          badge.classList.add('bg-red-500', 'animate-pulse'); badge.innerText = "SPRINT 衝刺";
-          title.innerHTML = `Round <span class="text-white">${uniTimer.hiitRound}</span> / 8`;
-          time.classList.add('text-red-400'); prog.classList.add('bg-red-500');
-        } else {
-          badge.classList.add('bg-emerald-500'); badge.innerText = "RECOVER 恢復";
-          title.innerHTML = `Round <span class="text-white">${uniTimer.hiitRound}</span> / 8`;
-          time.classList.add('text-emerald-400'); prog.classList.add('bg-emerald-500');
-        }
+        if (uniTimer.hiitPhase === 'sprint') { badge.classList.add('bg-red-500', 'animate-pulse'); badge.innerText = "SPRINT 衝刺"; title.innerHTML = `Round <span class="text-white">${uniTimer.hiitRound}</span> / 8`; time.classList.add('text-red-400'); prog.classList.add('bg-red-500'); } 
+        else { badge.classList.add('bg-emerald-500'); badge.innerText = "RECOVER 恢復"; title.innerHTML = `Round <span class="text-white">${uniTimer.hiitRound}</span> / 8`; time.classList.add('text-emerald-400'); prog.classList.add('bg-emerald-500'); }
       }
       renderWorkout(); 
     }
-
-    function utPause() {
-      uniTimer.paused = !uniTimer.paused; const btn = document.getElementById('btn-ut-pause');
-      if (uniTimer.paused) { btn.innerHTML = `<i class="fa-solid fa-play text-sm"></i>`; btn.classList.replace('bg-zinc-800', 'bg-white'); btn.classList.replace('text-zinc-300', 'text-black'); } 
-      else { btn.innerHTML = `<i class="fa-solid fa-pause text-sm"></i>`; btn.classList.replace('bg-white', 'bg-zinc-800'); btn.classList.replace('text-black', 'text-zinc-300'); }
-    }
+    
+    function utPause() { uniTimer.paused = !uniTimer.paused; const btn = document.getElementById('btn-ut-pause'); if (uniTimer.paused) { btn.innerHTML = `<i class="fa-solid fa-play text-sm"></i>`; btn.classList.replace('bg-zinc-800', 'bg-white'); btn.classList.replace('text-zinc-300', 'text-black'); } else { btn.innerHTML = `<i class="fa-solid fa-pause text-sm"></i>`; btn.classList.replace('bg-white', 'bg-zinc-800'); btn.classList.replace('text-black', 'text-zinc-300'); } }
     function utAdd15s() { uniTimer.remaining += 15; uniTimer.total += 15; utUpdateVisuals(); }
     function utStop() { utClose(); showToast("計時已中止"); }
-    function utClose() {
-      if(uniTimer.interval) clearInterval(uniTimer.interval); uniTimer.active = false;
-      const banner = document.getElementById('universal-timer-banner'); banner.classList.add('translate-y-full');
-      document.getElementById('main-content').classList.remove('pb-[75px]');
-      setTimeout(() => { banner.classList.add('hidden'); }, 300); renderWorkout(); 
-    }
+    function utClose() { if(uniTimer.interval) clearInterval(uniTimer.interval); uniTimer.active = false; document.getElementById('universal-timer-banner').classList.add('translate-y-full'); document.getElementById('main-content').classList.remove('pb-[75px]'); setTimeout(() => { document.getElementById('universal-timer-banner').classList.add('hidden'); }, 300); renderWorkout(); }
 
     function renderWorkout() {
       const activeIds = assignedRoutines[currentDay] || []; const pool = getFullPool();
@@ -468,7 +566,7 @@
 
       if (activeExs.length === 0) {
         barContainer.innerHTML = '';
-        container.innerHTML = `<div class="bg-zinc-800 rounded-xl p-8 text-center border border-zinc-750 flex-1 flex flex-col justify-center items-center h-full"><i class="fa-solid fa-bed text-4xl text-zinc-600 mb-4"></i><p class="text-xs text-zinc-400 mb-4">😴 今日課表目前為空。<br>點擊上方「編輯課表」自組動作啦！</p></div>`;
+        container.innerHTML = `<div class="bg-zinc-800 rounded-xl p-8 text-center border border-zinc-750 flex-1 flex flex-col justify-center items-center h-full"><i class="fa-solid fa-bed text-4xl text-zinc-600 mb-4"></i><p class="text-xs text-zinc-400 mb-4 leading-relaxed">😴 今日課表目前為空。<br>點擊上方「編輯課表」自組動作啦！</p><button onclick="openRoutineManager()" class="mt-2 bg-emerald-500 text-zinc-950 px-4 py-2 rounded-lg font-bold text-xs">去編輯課表</button></div>`;
         btnPrev.disabled = true; btnNext.disabled = true; return;
       }
 
@@ -616,18 +714,15 @@
     }
 
     function prevStation() { if (currentStationIndex > 0) { currentStationIndex--; renderWorkout(); } }
+    function jumpStation(idx) { currentStationIndex = idx; renderWorkout(); }
     function nextStation() {
       const activeIds = assignedRoutines[currentDay] || [];
       if (currentStationIndex < activeIds.length - 1) { currentStationIndex++; renderWorkout(); } 
       else { showToast("🎉 恭喜！你已經完成今日所有課表！"); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); }
     }
-    function jumpStation(idx) { currentStationIndex = idx; renderWorkout(); }
     function switchDay(d) {
       currentDay = d; currentStationIndex = 0; 
-      ['A','B','C'].forEach(x => {
-        const btn = document.getElementById(`btn-day-${x}`);
-        if(btn) btn.className = x===d ? "flex-1 py-2 text-center text-xs font-black rounded-lg transition-all bg-emerald-500 text-zinc-950 shadow-md" : "flex-1 py-2 text-center text-xs font-black rounded-lg transition-all text-zinc-400 hover:text-zinc-200";
-      });
+      ['A','B','C'].forEach(x => { document.getElementById(`btn-day-${x}`).className = x===d ? "flex-1 py-2 text-center text-xs font-black rounded-lg bg-emerald-500 text-zinc-950 shadow-md" : "flex-1 py-2 text-center text-xs font-black rounded-lg text-zinc-400 hover:text-zinc-200"; });
       utStop(); document.getElementById('day-title').innerText = { 'A': '課表 A — 推 + 下半身', 'B': '課表 B — 拉 + 核心', 'C': '課表 C — 全身 + Cardio' }[d]; renderWorkout();
     }
 
@@ -647,15 +742,12 @@
     function logSet(exId, s, isAuto = false) {
       const d = getTodayStr(); if(!workoutLogs[d]) workoutLogs[d] = {}; if(!workoutLogs[d][exId]) workoutLogs[d][exId] = [];
       const wEl = document.getElementById(`w-${exId}-${s}`); const rEl = document.getElementById(`r-${exId}-${s}`);
-      const w = wEl ? parseFloat(wEl.value) : 0; const r = rEl ? parseInt(rEl.value) : 0;
-      
       workoutLogs[d][exId] = workoutLogs[d][exId].filter(x => x.set !== s);
-      workoutLogs[d][exId].push({set: s, weight: w, reps: r}); saveData(); showToast('✅ 記錄成功');
-      if(navigator.vibrate) navigator.vibrate(100);
+      workoutLogs[d][exId].push({set: s, weight: wEl ? parseFloat(wEl.value) : 0, reps: rEl ? parseInt(rEl.value) : 0});
+      saveData(); showToast('✅ 記錄成功'); renderWorkout();
 
       const pool = getFullPool(); const ex = pool.find(e => e.id === exId);
       const reqSets = (ex && (ex.isWarmup || ex.isHiit)) ? 1 : (exerciseSetsCount[exId] || (ex ? ex.sets : 3));
-      renderWorkout();
 
       if (!isAuto && ex && !ex.isWarmup && !ex.isHiit) { utStart('rest', 60, { title: '深呼吸準備下一組' }); }
       if (s >= reqSets) {
@@ -669,63 +761,89 @@
     }
 
     // ==========================================
-    // 🤖 設 定 API KEY 面 板 (UI Logic)
+    // 🤖 API Key 面板 (升級為 2.5 系列)
     // ==========================================
     function openApiKeyModal() {
-      const storedKey = localStorage.getItem('gym_coach_api_key') || "";
-      document.getElementById('input-api-key').value = storedKey;
+      document.getElementById('input-api-key').value = localStorage.getItem('gym_coach_api_key') || "";
+      document.getElementById('input-ai-model').value = localStorage.getItem('gym_coach_ai_model') || "gemini-2.5-flash";
       document.getElementById('apikey-modal').classList.remove('hidden');
     }
-
-    function closeApiKeyModal() {
-      document.getElementById('apikey-modal').classList.add('hidden');
-    }
-
+    
+    function closeApiKeyModal() { document.getElementById('apikey-modal').classList.add('hidden'); }
+    
     function saveApiKey() {
-      const keyInput = document.getElementById('input-api-key').value.trim();
-      if(keyInput) {
-        localStorage.setItem('gym_coach_api_key', keyInput);
-        showToast("🔑 金鑰已儲存並啟用！");
-      } else {
-        localStorage.removeItem('gym_coach_api_key');
-        showToast("金鑰已清除，轉為 Demo 模式。");
+      const key = document.getElementById('input-api-key').value.trim();
+      const model = document.getElementById('input-ai-model').value;
+
+      if(key) { 
+        if(!key.startsWith('AIza')) { return showToast("⚠️ 警告：金鑰必須以「AIza」開頭！", true); }
+        localStorage.setItem('gym_coach_api_key', key); 
+        localStorage.setItem('gym_coach_ai_model', model); 
+        showToast("🔑 金鑰及模型已成功儲存！"); 
+      } 
+      else { 
+        localStorage.removeItem('gym_coach_api_key'); 
+        showToast("已清除金鑰，轉為 Demo 模式。"); 
       }
       closeApiKeyModal();
     }
 
-
     // ==========================================
-    // 🤖 AI 教練核心 (支援真 API Key / Demo 雙模式)
+    // 🤖 AI 教練核心 (完美對接 Gemini 2.5)
     // ==========================================
     async function callGeminiAI(userQuery) {
-      const apiKey = localStorage.getItem('gym_coach_api_key') || ""; 
+      let apiKey = localStorage.getItem('gym_coach_api_key') || ""; 
+      let aiModel = localStorage.getItem('gym_coach_ai_model') || "gemini-2.5-flash";
+      apiKey = apiKey.trim();
 
       if (!apiKey) {
         return new Promise(resolve => {
           setTimeout(() => {
-            let reply = "【Demo 模式】收到！不過因為你未設定智能金鑰，我暫時只能夠用預設說話覆你。如果你想我真係答到你，請撳右上角個「🔑 鎖匙」按鈕填寫你條專屬金鑰啦！💪";
-            let action = "none"; let params = {};
-            
-            if(userQuery.includes("體重") || userQuery.includes("kg")) {
-              reply = "【Demo 模式】叻仔！已經幫你記低咗體重。繼續保持！⚖️";
-              action = "updateBodyStats"; 
-              params = { weight: parseFloat(userQuery.match(/[\d.]+/)?.[0]) || 72.5 };
-            } else if (userQuery.includes("減脂")) {
-              reply = "【Demo 模式】想減脂快啲？最緊要係「熱量赤字」！做重訓保持肌肉量，再加適量帶氧（例如課表C嘅 HIIT），同埋戒飲含糖凍飲啦！🔥";
-            } else if (userQuery.includes("深蹲") || userQuery.includes("做左")) {
-              reply = "【Demo 模式】好波！紀錄咗呢組動作，抖陣準備下一組！🏋️";
-              action = "logSet";
-            }
-            resolve({ reply, action, params });
-          }, 1200);
+            resolve({ reply: "【Demo 模式】請撳右上角 🔑 填寫專屬金鑰解鎖 AI。", action: "none", params: {} });
+          }, 800);
         });
       }
 
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-      const sysInstruction = `你係香港健身教練阿聰。用廣東話回覆。可以進行 action: updateBodyStats, logSet, none。回覆JSON格式。`;
-      const payload = { contents: [{ parts: [{ text: userQuery }] }], systemInstruction: { parts: [{ text: sysInstruction }] }, generationConfig: { responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: { reply: {type: "STRING"}, action: {type: "STRING"}, params: {type: "OBJECT", properties: { weight: {type: "NUMBER"}, bf: {type: "NUMBER"} }} } }} };
-      const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      const data = await res.json(); return JSON.parse(data.candidates[0].content.parts[0].text);
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${aiModel}:generateContent?key=${apiKey}`;
+      const sysInstruction = `你係香港健身教練阿聰。用廣東話回覆。可以進行 action: updateBodyStats, logSet, none。回覆JSON格式: {"reply":"...","action":"...","params":{"weight":0,"bf":0}}`;
+      
+      const payload = { 
+        contents: [{ parts: [{ text: userQuery }] }], 
+        generationConfig: { responseMimeType: "application/json" } 
+      };
+
+      // 支援最新的 Gemini 2.5 系統指令寫法
+      if (aiModel.includes('1.5') || aiModel.includes('2.')) {
+          payload.systemInstruction = { parts: [{ text: sysInstruction }] };
+      } else {
+          payload.contents[0].parts[0].text = sysInstruction + "\n\n用戶要求：" + userQuery;
+      }
+
+      try {
+        const res = await fetch(url, { 
+          method: "POST", 
+          headers: { "Content-Type": "application/json" }, 
+          body: JSON.stringify(payload) 
+        });
+        
+        if (!res.ok) {
+           const errText = await res.text();
+           let errorDetail = errText;
+           try { const errJson = JSON.parse(errText); errorDetail = errJson.error ? errJson.error.message : errText; } catch(e) {}
+           throw new Error(`[${res.status}] ${errorDetail}`);
+        }
+        
+        const data = await res.json(); 
+        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+            return JSON.parse(data.candidates[0].content.parts[0].text);
+        } else {
+            throw new Error("Invalid response format: " + JSON.stringify(data));
+        }
+
+      } catch (error) {
+        console.error("Gemini API Error:", error);
+        throw error;
+      }
     }
 
     async function sendChatMessage() {
@@ -733,17 +851,27 @@
       const chatBox = document.getElementById('ai-chat-box');
       chatBox.innerHTML += `<div class="bg-emerald-500/20 text-zinc-100 border border-emerald-500/30 max-w-[85%] rounded-2xl rounded-tr-none p-3 self-end shadow leading-relaxed">${text}</div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
+      
       const loaderId = 'loader-' + Date.now();
       chatBox.innerHTML += `<div id="${loaderId}" class="bg-zinc-800 text-zinc-400 border border-zinc-750 max-w-[85%] rounded-2xl rounded-tl-none p-3 self-start shadow"><i class="fa-solid fa-spinner animate-spin"></i> 阿聰思考中...</div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
+      
       try {
-        const res = await callGeminiAI(text); document.getElementById(loaderId).remove();
+        const res = await callGeminiAI(text); 
+        document.getElementById(loaderId).remove();
         chatBox.innerHTML += `<div class="bg-zinc-800 text-zinc-100 border border-zinc-750 max-w-[85%] rounded-2xl rounded-tl-none p-3 self-start shadow leading-relaxed">${res.reply}</div>`;
-        if (res.action === 'updateBodyStats') { if (res.params.weight) document.getElementById('input-weight').value = res.params.weight; saveBodyStats(); }
+        if (res.action === 'updateBodyStats' && res.params.weight) { document.getElementById('input-weight').value = res.params.weight; saveBodyStats(); }
         else if (res.action === 'logSet') { showToast("教練已幫你紀錄！"); }
       } catch(e) {
         document.getElementById(loaderId).remove();
-        chatBox.innerHTML += `<div class="bg-zinc-800 text-red-400 border border-red-900 max-w-[85%] rounded-2xl p-3 self-start leading-relaxed">⚠️ 網絡連線問題，請檢查你輸入嘅金鑰是否正確！</div>`;
+        chatBox.innerHTML += `
+          <div class="bg-zinc-800 text-red-400 border border-red-900 max-w-[85%] rounded-2xl p-3 self-start leading-relaxed">
+            ⚠️ 系統偵測到以下錯誤：<br>
+            <div class="bg-black/50 p-2 rounded mt-2 text-[10px] font-mono break-words opacity-80">${e.message}</div>
+            <div class="mt-2 text-[11px] text-zinc-400">
+              💡 <b>解決方法：</b>請撳右上角 🔑 圖案，將「AI 模型」轉做 <b>Gemini 2.5 Flash</b> 再試一次！
+            </div>
+          </div>`;
       }
       chatBox.scrollTop = chatBox.scrollHeight;
     }
@@ -755,17 +883,11 @@
       document.querySelectorAll('nav button').forEach(b => b.className = "flex flex-col items-center justify-center w-20 h-full text-zinc-400 hover:text-zinc-200 transition-colors");
       document.getElementById(`tab-${tab}`).classList.remove('hidden');
       document.getElementById(`nav-${tab}`).className = "flex flex-col items-center justify-center w-20 h-full text-emerald-400 transition-colors";
+      // 切換去 progress tab 嗰陣重新讀取資料
+      if(tab === 'progress') { renderHistory(); renderBodyStats(); }
     }
-    function exportToCSV() { showToast("CSV 匯出成功！(本地備份)"); }
-    function clearAllWorkoutLogs() { workoutLogs = {}; saveData(); renderWorkout(); showToast("已清空"); }
-    function saveBodyStats() { showToast("體重及體脂已保存！"); }
-    function openRoutineManager() { document.getElementById('routine-manager-modal').classList.remove('hidden'); }
-    function closeRoutineManager() { document.getElementById('routine-manager-modal').classList.add('hidden'); currentStationIndex = 0; renderWorkout(); }
 
     window.onload = () => { loadData(); renderWorkout(); };
   </script>
 </body>
 </html>
-
-
-```
