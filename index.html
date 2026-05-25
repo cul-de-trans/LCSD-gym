@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>康文署「無腦」健身助手 Pro v8.0 - LCSD Gym Coach</title>
-  <!-- Tailwind CSS -->
+  <title>健身助手</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     .no-select { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
@@ -20,13 +18,27 @@
       0%, 100% { background-color: #f59e0b; color: #09090b; }
       50% { background-color: #d97706; color: #ffffff; }
     }
+    @keyframes pulse-stopwatch {
+      0%, 100% { background-color: #d946ef; color: #09090b; }
+      50% { background-color: #a21caf; color: #ffffff; }
+    }
     .timer-flashing { animation: pulse-timer 1s infinite ease-in-out; }
+    .stopwatch-flashing { animation: pulse-stopwatch 1s infinite ease-in-out; }
     .fake-password { -webkit-text-security: disc; }
+
+    /* 隱藏原生 Number Input 的上下箭嘴 */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
   </style>
 </head>
 <body class="bg-zinc-950 text-zinc-100 font-sans antialiased no-select">
 
-  <!-- Mobile Container -->
   <div class="max-w-md mx-auto h-[100dvh] flex flex-col bg-zinc-900 shadow-2xl relative pb-[68px]">
     
     <header class="bg-zinc-800 border-b border-zinc-700 px-4 py-3 shrink-0 z-40 flex justify-between items-center">
@@ -35,16 +47,14 @@
           <i class="fa-solid fa-dumbbell"></i>
         </div>
         <div>
-          <h1 class="text-sm font-black text-emerald-400 leading-tight">康文署無腦操 Pro v8.0</h1>
-          <p class="text-[10px] text-zinc-400">Gemini 2.5 終極對話版</p>
+          <h1 class="text-sm font-black text-emerald-400 leading-tight">健身助手</h1>
+          <p class="text-[10px] text-zinc-400">記錄與 AI 對話</p>
         </div>
       </div>
-      <span class="text-[9px] bg-emerald-950/20 border border-emerald-800 text-emerald-400 px-2 py-0.5 rounded-full font-bold">完美復活</span>
     </header>
 
     <main id="main-content" class="flex-1 flex flex-col overflow-hidden p-4 relative transition-all duration-300">
       
-      <!-- TAB 1: WORKOUT PLAYGROUND -->
       <section id="tab-workout" class="tab-section flex-1 flex flex-col overflow-hidden">
         <div class="shrink-0">
           <div class="bg-zinc-800 p-1 rounded-xl flex gap-1 mb-3 border border-zinc-700">
@@ -73,9 +83,8 @@
         </div>
       </section>
 
-      <!-- TAB 2: HISTORY LOGS & PROGRESS -->
       <section id="tab-progress" class="tab-section hidden flex-1 flex flex-col overflow-y-auto">
-        <h2 class="text-base font-bold text-zinc-100 mb-4 flex items-center gap-2 shrink-0"><i class="fa-solid fa-chart-line text-emerald-400"></i> 起鐵數據與進度追蹤</h2>
+        <h2 class="text-base font-bold text-zinc-100 mb-4 flex items-center gap-2 shrink-0"><i class="fa-solid fa-chart-line text-emerald-400"></i> 訓練與身體數據</h2>
         <div class="grid grid-cols-2 gap-3 mb-4 shrink-0">
           <button onclick="exportToCSV()" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 transition-all text-zinc-950 font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg">
             <i class="fa-solid fa-file-csv"></i> 匯出 CSV
@@ -86,20 +95,20 @@
         </div>
         
         <div class="bg-zinc-800 p-4 rounded-xl border border-zinc-700 mb-4 shrink-0">
-          <h4 class="text-xs font-bold text-zinc-200 mb-3">📋 歷次起鐵強度記錄</h4>
+          <h4 class="text-xs font-bold text-zinc-200 mb-3">📋 訓練記錄</h4>
           <div class="space-y-2 max-h-60 overflow-y-auto pr-1" id="workout-history-list"></div>
         </div>
 
         <div class="bg-zinc-800 p-4 rounded-xl border border-zinc-700 shrink-0">
-          <h4 class="text-xs font-bold mb-3 text-zinc-200">📊 身體數據歷史記錄</h4>
+          <h4 class="text-xs font-bold mb-3 text-zinc-200">📊 身體數據</h4>
           <div class="grid grid-cols-2 gap-3 mb-3">
             <div>
               <label class="text-[10px] text-zinc-400 block mb-1">體重 (kg)</label>
-              <input type="number" id="input-weight" value="73.0" step="0.1" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-100 font-bold focus:outline-none focus:border-emerald-500">
+              <input type="number" inputmode="decimal" pattern="[0-9]*" id="input-weight" value="73.0" step="0.1" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-100 font-bold focus:outline-none focus:border-emerald-500 appearance-none">
             </div>
             <div>
               <label class="text-[10px] text-zinc-400 block mb-1">體脂率 (%)</label>
-              <input type="number" id="input-bf" value="27.0" step="0.1" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-100 font-bold focus:outline-none focus:border-emerald-500">
+              <input type="number" inputmode="decimal" pattern="[0-9]*" id="input-bf" value="27.0" step="0.1" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-100 font-bold focus:outline-none focus:border-emerald-500 appearance-none">
             </div>
           </div>
           <button onclick="saveBodyStats()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold py-2 rounded-lg text-xs transition-colors">記錄今日數據</button>
@@ -107,68 +116,50 @@
         </div>
       </section>
 
-      <!-- TAB 3: AI COACH CHAT INTERFACE -->
       <section id="tab-ai" class="tab-section hidden flex-1 flex flex-col overflow-hidden">
         <div class="bg-zinc-800/60 border border-zinc-700/80 rounded-xl p-3 mb-3 flex items-center justify-between shrink-0">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-zinc-950 font-black text-lg">
+            <div class="w-10 h-10 rounded-full bg-zinc-700 flex items-center justify-center text-emerald-400 font-black text-lg">
               <i class="fa-solid fa-robot"></i>
             </div>
             <div>
-              <h3 class="text-xs font-black text-emerald-400">AI 廣東話教練「阿聰」</h3>
-              <p class="text-[9px] text-zinc-400">Gemini 2.5 Flash 驅動</p>
+              <h3 class="text-xs font-black text-emerald-400">AI 教練</h3>
             </div>
           </div>
           <button onclick="openApiKeyModal()" class="w-8 h-8 rounded-lg bg-zinc-700/80 hover:bg-zinc-600 text-zinc-300 flex items-center justify-center transition-colors shadow">
-            <i class="fa-solid fa-key text-[10px]"></i>
+            <i class="fa-solid fa-gear text-[10px]"></i>
           </button>
         </div>
 
         <div id="ai-chat-box" class="flex-1 overflow-y-auto space-y-3.5 mb-3 pr-1 py-1 flex flex-col text-xs scrollbar-none">
           <div class="bg-zinc-800 text-zinc-100 border border-zinc-750 max-w-[85%] rounded-2xl rounded-tl-none p-3 self-start leading-relaxed shadow">
-            💪 哈囉！我係你嘅教練阿聰！已經成功升級到 Gemini 2.5 引擎啦！有咩可以幫到手？<br><br>
-            👉 <strong>「幫我記低今日體重係 72.5kg」</strong><br>
-            👉 <strong>「高腳杯深蹲第一組做左16kg 12下」</strong><br>
+            你好，我係 AI 教練阿聰。有咩可以幫到手？<br><br>
+            👉 <strong>「幫我記低今日體重 72.5kg」</strong><br>
+            👉 <strong>「深蹲第一組 16kg 12下」</strong><br>
           </div>
         </div>
 
         <div class="flex gap-1.5 overflow-x-auto pb-2 shrink-0 scrollbar-none whitespace-nowrap text-[10px] text-zinc-300">
-          <button onclick="autofillChat('我今日體重輕咗，得 72.5kg')" class="px-2.5 py-1.5 bg-zinc-800/80 border border-zinc-700 rounded-full font-bold">⚖️ 記體重 72.5kg</button>
-          <button onclick="autofillChat('高腳杯深蹲第一組做左16kg 12下')" class="px-2.5 py-1.5 bg-zinc-800/80 border border-zinc-700 rounded-full font-bold">🏋️ 紀錄 Set 1</button>
-          <button onclick="autofillChat('有咩方法減脂快啲？')" class="px-2.5 py-1.5 bg-zinc-800/80 border border-zinc-700 rounded-full font-bold">💡 減脂建議</button>
+          <button onclick="autofillChat('我今日體重 72.5kg')" class="px-2.5 py-1.5 bg-zinc-800/80 border border-zinc-700 rounded-full font-bold">⚖️ 記體重 72.5kg</button>
+          <button onclick="autofillChat('深蹲第一組 16kg 12下')" class="px-2.5 py-1.5 bg-zinc-800/80 border border-zinc-700 rounded-full font-bold">🏋️ 紀錄 Set 1</button>
+          <button onclick="autofillChat('有咩減脂建議？')" class="px-2.5 py-1.5 bg-zinc-800/80 border border-zinc-700 rounded-full font-bold">💡 減脂建議</button>
         </div>
 
         <div class="bg-zinc-800 border border-zinc-700 rounded-xl p-1.5 flex gap-1.5 shrink-0 shadow-md">
-          <input type="text" id="ai-user-input" onkeydown="handleChatKeydown(event)" placeholder="同教練阿聰講嘢..." class="flex-1 bg-transparent border-none text-xs text-zinc-100 font-bold focus:outline-none pl-2.5">
+          <input type="text" id="ai-user-input" onkeydown="handleChatKeydown(event)" placeholder="輸入訊息..." class="flex-1 bg-transparent border-none text-xs text-zinc-100 font-bold focus:outline-none pl-2.5">
           <button onclick="sendChatMessage()" id="btn-chat-send" class="w-10 h-8 rounded-lg bg-emerald-500 text-zinc-950 font-black flex items-center justify-center active:scale-95">
             <i class="fa-solid fa-paper-plane text-xs"></i>
           </button>
         </div>
       </section>
 
-      <!-- TAB 4: LCSD SURVIVAL GUIDE -->
-      <section id="tab-lcsd" class="tab-section hidden flex-1 overflow-y-auto">
-        <h2 class="text-base font-bold text-zinc-100 mb-4"><i class="fa-solid fa-compass text-emerald-400"></i> 康文署生存法則</h2>
-        <div class="space-y-4">
-          <div class="bg-zinc-800 p-4 rounded-xl border border-zinc-700">
-            <h3 class="text-xs font-bold text-emerald-400 mb-2"><i class="fa-solid fa-retweet"></i> 遇上人多塞車？無痛替代</h3>
-            <ul class="text-[11px] text-zinc-300 space-y-2 list-disc pl-4">
-              <li><strong>深蹲塞車：</strong>抱槓片做高腳杯深蹲，或去推腿機。</li>
-              <li><strong>臥推塞車：</strong>轉排 Chest Press 機械，兩者彈性互換。</li>
-              <li><strong>下拉塞車：</strong>改做單臂啞鈴划船或坐姿划船機。</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
     </main>
 
-    <!-- 🌟 UNIVERSAL GLOBAL FLOATING TIMER BANNER 🌟 -->
     <div id="universal-timer-banner" class="hidden fixed bottom-[68px] left-0 right-0 max-w-md mx-auto bg-zinc-950/95 backdrop-blur border-t border-zinc-800 shadow-[0_-15px_40px_rgba(0,0,0,0.85)] z-40 ut-transition translate-y-full">
       <div class="px-4 py-3 flex items-center justify-between gap-3">
         <div class="flex-1">
           <span id="ut-badge" class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest bg-emerald-500 text-zinc-950">REST 休息</span>
-          <div id="ut-title" class="text-[10px] text-zinc-400 mt-1.5 font-bold tracking-wider truncate">深呼吸準備下組</div>
+          <div id="ut-title" class="text-[10px] text-zinc-400 mt-1.5 font-bold tracking-wider truncate">準備下一組</div>
         </div>
         <div class="text-[44px] font-black font-mono leading-none tracking-tighter text-emerald-400" id="ut-time" style="font-variant-numeric: tabular-nums;">
           60
@@ -182,40 +173,36 @@
       <div class="h-1.5 w-full bg-zinc-900 overflow-hidden"><div id="ut-progress" class="h-full bg-emerald-500 w-full ut-bar-transition"></div></div>
     </div>
 
-    <!-- Notification Toast -->
     <div id="toast-msg" class="hidden fixed top-20 left-1/2 -translate-x-1/2 bg-zinc-800 border border-emerald-500 text-emerald-400 font-extrabold px-4 py-2.5 rounded-full text-[11px] shadow-2xl z-50 flex items-center gap-2 transition-all">
-      <i class="fa-solid fa-circle-info" id="toast-icon"></i><span id="toast-text">提示信息</span>
+      <i class="fa-solid fa-circle-info" id="toast-icon"></i><span id="toast-text">提示</span>
     </div>
 
-    <!-- Bottom Navigation Bar -->
     <nav class="bg-zinc-800 border-t border-zinc-700 h-[68px] fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50 flex justify-around items-center">
-      <button onclick="navigateTab('workout')" id="nav-workout" class="flex flex-col items-center justify-center w-20 h-full text-emerald-400 transition-colors"><i class="fa-solid fa-calendar-day text-base"></i><span class="text-[10px] mt-1 font-bold">今日課表</span></button>
-      <button onclick="navigateTab('progress')" id="nav-progress" class="flex flex-col items-center justify-center w-20 h-full text-zinc-400 hover:text-zinc-200 transition-colors"><i class="fa-solid fa-chart-line text-base"></i><span class="text-[10px] mt-1 font-bold">數據歷史</span></button>
-      <button onclick="navigateTab('ai')" id="nav-ai" class="flex flex-col items-center justify-center w-20 h-full text-zinc-400 hover:text-zinc-200 transition-colors"><i class="fa-solid fa-robot text-base"></i><span class="text-[10px] mt-1 font-bold">AI 助手</span></button>
-      <button onclick="navigateTab('lcsd')" id="nav-lcsd" class="flex flex-col items-center justify-center w-20 h-full text-zinc-400 hover:text-zinc-200 transition-colors"><i class="fa-solid fa-circle-info text-base"></i><span class="text-[10px] mt-1 font-bold">避坑指南</span></button>
+      <button onclick="navigateTab('workout')" id="nav-workout" class="flex flex-col items-center justify-center flex-1 h-full text-emerald-400 transition-colors"><i class="fa-solid fa-calendar-day text-base"></i><span class="text-[10px] mt-1 font-bold">今日課表</span></button>
+      <button onclick="navigateTab('progress')" id="nav-progress" class="flex flex-col items-center justify-center flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-colors"><i class="fa-solid fa-chart-line text-base"></i><span class="text-[10px] mt-1 font-bold">數據歷史</span></button>
+      <button onclick="navigateTab('ai')" id="nav-ai" class="flex flex-col items-center justify-center flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-colors"><i class="fa-solid fa-robot text-base"></i><span class="text-[10px] mt-1 font-bold">AI 教練</span></button>
     </nav>
   </div>
 
-  <!-- ROUTINE MANAGER MODAL -->
   <div id="routine-manager-modal" class="hidden fixed inset-0 z-50 bg-zinc-950/98 backdrop-blur-md overflow-y-auto no-select">
     <div class="max-w-md mx-auto min-h-[100dvh] bg-zinc-900 shadow-2xl flex flex-col p-4 pb-20">
       <div class="flex justify-between items-center border-b border-zinc-800 pb-3 mb-4">
-        <div><h2 class="text-sm font-black text-emerald-400"><i class="fa-solid fa-sliders"></i> 動作庫與課表編輯器</h2></div>
+        <div><h2 class="text-sm font-black text-emerald-400">動作庫與課表編輯</h2></div>
         <button onclick="closeRoutineManager()" class="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 active:text-white"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
       <details class="bg-zinc-850 border border-zinc-750 rounded-xl p-3.5 mb-4 group">
         <summary class="text-xs font-black text-emerald-300 cursor-pointer list-none flex items-center justify-between">
-          <span><i class="fa-solid fa-plus-circle mr-1"></i> ✨ 建立自定義新動作</span>
+          <span><i class="fa-solid fa-plus-circle mr-1"></i> 新增自訂動作</span>
           <i class="fa-solid fa-chevron-down text-[10px] group-open:rotate-180 transition-transform"></i>
         </summary>
         <div class="mt-4 space-y-3 border-t border-zinc-800 pt-3 text-xs">
-          <input type="text" id="cust-name" placeholder="動作名稱 (例：引體上升)" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-zinc-200 focus:outline-none focus:border-emerald-500">
+          <input type="text" id="cust-name" placeholder="動作名稱" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-zinc-200 focus:outline-none focus:border-emerald-500">
           <div class="grid grid-cols-2 gap-3">
             <select id="cust-muscle" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-2 text-zinc-200"><option value="chest">胸部</option><option value="back">背部</option><option value="leg">腿部</option><option value="shoulder">肩膀</option><option value="arm">手臂</option><option value="core">核心</option></select>
             <select id="cust-type" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-2 text-zinc-200"><option value="freeweight">自由重量</option><option value="machine">器械</option><option value="bodyweight">自重</option></select>
           </div>
-          <button onclick="createNewCustomExercise()" class="w-full bg-emerald-500 text-zinc-950 font-black py-2.5 rounded-lg text-xs hover:bg-emerald-400 active:scale-95 transition-transform">💾 保存並加入動作庫</button>
+          <button onclick="createNewCustomExercise()" class="w-full bg-emerald-500 text-zinc-950 font-black py-2.5 rounded-lg text-xs hover:bg-emerald-400 active:scale-95 transition-transform">儲存並加入動作庫</button>
         </div>
       </details>
 
@@ -226,39 +213,34 @@
       <div class="flex-1 space-y-2.5 overflow-y-auto max-h-[50vh] pr-1" id="routine-library-list"></div>
       
       <div class="mt-4 pt-3 border-t border-zinc-800">
-        <button onclick="closeRoutineManager()" class="w-full bg-emerald-500 text-zinc-950 font-black py-3 rounded-xl text-xs hover:bg-emerald-400 active:scale-95 transition-transform"><i class="fa-solid fa-check"></i> 確認修改並儲存</button>
+        <button onclick="closeRoutineManager()" class="w-full bg-emerald-500 text-zinc-950 font-black py-3 rounded-xl text-xs hover:bg-emerald-400 active:scale-95 transition-transform">確認</button>
       </div>
     </div>
   </div>
 
-  <!-- 🌟 API KEY MODAL (更新為 Gemini 2.5 終極版) 🌟 -->
   <div id="apikey-modal" class="hidden fixed inset-0 z-[60] bg-zinc-950/98 backdrop-blur-md flex items-center justify-center p-4 no-select">
     <div class="w-full max-w-sm bg-zinc-900 border border-zinc-750 rounded-2xl p-5 shadow-2xl">
       <div class="flex justify-between items-start mb-2">
-        <h3 class="text-sm font-black text-emerald-400"><i class="fa-solid fa-key"></i> 設定 Gemini 智能引擎</h3>
+        <h3 class="text-sm font-black text-emerald-400">AI 模型設定</h3>
       </div>
-      <p class="text-[10px] text-zinc-400 mb-4 leading-relaxed">請貼上你嘅專屬金鑰以解鎖完整 AI 對話功能。</p>
+      <p class="text-[10px] text-zinc-400 mb-4 leading-relaxed">請輸入 Gemini API Key。</p>
       
-      <input type="text" id="input-api-key" placeholder="貼上金鑰 (必須以 AIza 開頭...)" class="fake-password w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-3 text-xs text-zinc-100 font-mono focus:outline-none focus:border-emerald-500 mb-4">
+      <input type="text" id="input-api-key" placeholder="API Key" class="fake-password w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-3 text-xs text-zinc-100 font-mono focus:outline-none focus:border-emerald-500 mb-4">
       
-      <!-- 🌟 完全修正：對準最新的 2.5 系列模型 🌟 -->
-      <label class="block text-[10px] text-zinc-400 mb-1.5 font-bold"><i class="fa-solid fa-microchip"></i> 選擇 AI 模型：</label>
+      <label class="block text-[10px] text-zinc-400 mb-1.5 font-bold">選擇模型：</label>
       <select id="input-ai-model" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-3 text-xs text-zinc-100 focus:outline-none focus:border-emerald-500 mb-5">
-        <option value="gemini-2.5-flash">Gemini 2.5 Flash (穩定 / 速度快)</option>
-        <option value="gemini-2.5-pro">Gemini 2.5 Pro (最強大)</option>
+        <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+        <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
       </select>
 
       <div class="flex gap-2">
         <button onclick="closeApiKeyModal()" class="flex-1 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl text-xs font-bold transition-colors">取消</button>
-        <button onclick="saveApiKey()" class="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 rounded-xl text-xs font-black transition-colors">儲存並啟用</button>
+        <button onclick="saveApiKey()" class="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 rounded-xl text-xs font-black transition-colors">儲存</button>
       </div>
     </div>
   </div>
 
   <script>
-    // ---------------------------------
-    // SOUND & UI HELPERS
-    // ---------------------------------
     function playBeep(f=587.33, d=0.15) { 
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -285,9 +267,6 @@
       setTimeout(() => t.classList.add('hidden'), 3500);
     }
 
-    // ---------------------------------
-    // STATE & DATA
-    // ---------------------------------
     let currentDay = 'A'; 
     let currentStationIndex = 0; 
     let workoutLogs = {}; 
@@ -319,25 +298,25 @@
     };
 
     const baselineExercises = [
-      { id: 'a0_warmup', isWarmup: true, name: '熱身：單車/跑步機', duration: 360, svgPreset: 'cardio', tips: [{type:'ok', text:'目的係升高核心體溫同令關節分泌滑液。保持微微出汗、可以輕鬆傾偈嘅強度（RPE 4-5）。'}, {type:'err', text:'⚠️ 熱身做太劇烈消耗晒體力，導致正式起鐵時無力；或者完全唔熱身直接做大重量，極易拉傷。'}] },
-      { id: 'a1', name: 'Goblet Squat (高腳杯深蹲)', target: '主練：股四頭肌(前大腿)、臀大肌、核心', muscleGroup: 'leg', lcsdSetting: '康文署通常只有固定重量啞鈴。選擇合適重量，雙手托住啞鈴上端貼近胸口，雙腳打開與肩同闊，腳尖微向外八字（約15-30度）。', defaultWeight: 14, defaultReps: 10, weightStep: 2, sets: 3, svgPreset: 'squat', tips: [{type:'ok', text:'下蹲時「髖關節」先向後推（Hinge），然後屈膝。膝蓋必須順著腳尖方向打開，下蹲至大腿至少與地面平行。'}, {type:'err', text:'⚠️ 致命錯誤：膝蓋內扣（X型腳）會令十字韌帶承受極大壓力；下背部「骨盆翻轉（Butt Wink）」容易導致腰椎受傷，必須全程收緊核心。'}] },
-      { id: 'a2', name: 'Chest Press (機動推胸)', target: '主練：胸大肌(整體厚度)、三角肌前束、三頭肌', muscleGroup: 'chest', lcsdSetting: '調整座位高度，令手柄剛好對齊胸部中線（乳頭位置）。背部緊貼靠墊，雙腳踩實地面建立穩定支點（Leg Drive）。', defaultWeight: 35, defaultReps: 10, weightStep: 2.5, sets: 3, svgPreset: 'benchpress', tips: [{type:'ok', text:'預備時肩胛骨向後收緊並下沉（夾背）。推起時手肘微曲，不要完全鎖死關節，以保持胸肌持續受力。'}, {type:'err', text:'⚠️ 圓肩推舉或聳肩會令「斜方肌」及肩關節代償，不但胸肌無感覺，更會增加肩夾擠綜合症（Impingement）風險。'}] },
-      { id: 'a3', name: 'Shoulder Press (坐姿肩推)', target: '主練：三角肌(前/中束)、肱三頭肌', muscleGroup: 'shoulder', lcsdSetting: '將可調式啞鈴椅調較至約 75-80 度（非完全90度，以保護肩關節）。啞鈴起點位於耳朵水平。', defaultWeight: 10, defaultReps: 10, weightStep: 2, sets: 3, svgPreset: 'shoulderpress', tips: [{type:'ok', text:'推起時呼氣，啞鈴軌跡呈微弧線向頭頂上方中線靠攏；下放時控制離心收縮，手肘角度大約 90 度。'}, {type:'err', text:'⚠️ 腰椎過度伸展（即係過度拱腰）會令下背受壓；手肘向兩側完全打開容易傷肩，建議手肘微向前方收起（肩胛骨平面）。'}] },
-      { id: 'a4', name: 'Triceps Pushdown (三頭下壓)', target: '主練：肱三頭肌 (長/外/內頭全覆蓋)', muscleGroup: 'tricep', lcsdSetting: '霸佔康文署高位滑輪機（Cable），建議扣上「雙頭繩（Rope）」以增加活動幅度。雙腳微曲站穩，上半身微向前傾。', defaultWeight: 15, defaultReps: 12, weightStep: 2.5, sets: 3, svgPreset: 'tricep', tips: [{type:'ok', text:'大臂（肱骨）全程夾緊貼實身體兩側！以手肘為單一鉸鏈點，發力下壓至手臂完全伸直，底部將繩索向外拉開（頂峰收縮）。'}, {type:'err', text:'⚠️ 利用身體重量向下壓，或者回放時大臂向前移（手肘離開身側），會令背部及肩膀代償，完全失去三頭肌孤立刺激。'}] },
-      { id: 'a5', name: 'Plank (平板支撐)', target: '主練：深層核心肌群 (腹橫肌、多裂肌)', muscleGroup: 'core', lcsdSetting: '於瑜伽地墊上進行。雙手手肘撐地與肩同闊，雙腳腳尖撐地，全身肌肉繃緊。', defaultWeight: 0, defaultReps: 45, weightStep: 5, sets: 3, isTimeBased: true, svgPreset: 'plank', tips: [{type:'ok', text:'肩膀、背部、臀部至腳跟必須成一直線。幻想將手肘及腳尖向身體中心互相拉近，啟動深層核心（抗伸展）。'}, {type:'err', text:'⚠️ 塌腰會令腰椎承受所有壓力，極易受傷；臀部抬得太高（變成倒V）則會變成用肩膀支撐，失去鍛鍊核心嘅意義。'}] },
+      { id: 'a0_warmup', isWarmup: true, name: '熱身：單車/跑步機', duration: 360, svgPreset: 'cardio', tips: [{type:'ok', text:'目的為升高核心體溫。保持微微出汗強度（RPE 4-5）。'}, {type:'err', text:'熱身太劇烈會消耗體力；完全不熱身容易拉傷。'}] },
+      { id: 'a1', name: 'Goblet Squat (高腳杯深蹲)', target: '主練：股四頭肌(前大腿)、臀大肌、核心', muscleGroup: 'leg', lcsdSetting: '選擇合適重量，雙手托住啞鈴上端貼近胸口，雙腳打開與肩同闊，腳尖微外八。', defaultWeight: 14, defaultReps: 10, sets: 3, svgPreset: 'squat', tips: [{type:'ok', text:'下蹲時髖關節先向後推，膝蓋順著腳尖方向打開，下蹲至大腿與地面平行。'}, {type:'err', text:'避免膝蓋內扣；下背部注意骨盆翻轉，需全程收緊核心。'}] },
+      { id: 'a2', name: 'Chest Press (機動推胸)', target: '主練：胸大肌、三角肌前束、三頭肌', muscleGroup: 'chest', lcsdSetting: '調整座位高度，手柄對齊胸部中線。背部緊貼靠墊，雙腳踩實地面。', defaultWeight: 35, defaultReps: 10, sets: 3, svgPreset: 'benchpress', tips: [{type:'ok', text:'預備時肩胛骨向後收緊並下沉。推起時手肘微曲不鎖死。'}, {type:'err', text:'避免聳肩，減少斜方肌代償。'}] },
+      { id: 'a3', name: 'Shoulder Press (坐姿肩推)', target: '主練：三角肌、肱三頭肌', muscleGroup: 'shoulder', lcsdSetting: '將可調式椅背調至約 75-80 度。啞鈴起點位於耳朵水平。', defaultWeight: 10, defaultReps: 10, sets: 3, svgPreset: 'shoulderpress', tips: [{type:'ok', text:'推起時呼氣，啞鈴軌跡向頭頂上方中線靠攏；下放時控制離心收縮。'}, {type:'err', text:'避免腰椎過度伸展；手肘微向前方收起以保護肩關節。'}] },
+      { id: 'a4', name: 'Triceps Pushdown (三頭下壓)', target: '主練：肱三頭肌', muscleGroup: 'tricep', lcsdSetting: '使用高位滑輪機（Cable），建議扣上雙頭繩。雙腳微曲站穩，上半身微前傾。', defaultWeight: 15, defaultReps: 12, sets: 3, svgPreset: 'tricep', tips: [{type:'ok', text:'大臂緊貼身體兩側。以手肘為鉸鏈點下壓至手臂伸直，底部將繩索向外拉開。'}, {type:'err', text:'避免用身體重量向下壓，或回放時大臂向前移。'}] },
+      { id: 'a5', name: 'Plank (平板支撐)', target: '主練：核心肌群', muscleGroup: 'core', lcsdSetting: '於瑜伽地墊上進行。雙手手肘撐地與肩同闊，腳尖撐地，全身繃緊。', defaultWeight: 0, defaultReps: 45, sets: 3, isTimeBased: true, svgPreset: 'plank', tips: [{type:'ok', text:'肩膀、背部、臀部至腳跟成一直線。手肘及腳尖向身體中心互相拉近發力。'}, {type:'err', text:'避免塌腰或臀部抬太高。'}] },
       
-      { id: 'b0_warmup', isWarmup: true, name: '熱身：滑步機', duration: 360, svgPreset: 'cardio', tips: [{type:'ok', text:'目的係升高核心體溫同令關節分泌滑液。阻力4-6，橢圓機全身預熱。'}, {type:'err', text:'⚠️ 熱身做太劇烈消耗晒體力，導致正式起鐵時無力；或者完全唔熱身直接做大重量，極易拉傷。'}] },
-      { id: 'b1', name: 'Hip Thrust (啞鈴臀推)', target: '主練：臀大肌、膕繩肌(大腿後側)', muscleGroup: 'leg', lcsdSetting: '肩胛骨下緣（Bra帶位）靠在健身椅邊緣。啞鈴橫放於髖關節摺痕處（建議墊毛巾防痛）。雙腳闊度與肩同寬。', defaultWeight: 16, defaultReps: 12, weightStep: 2, sets: 3, svgPreset: 'hipthrust', tips: [{type:'ok', text:'頂點時小腿與地面呈 90 度，下巴微收望向前方。以臀部發力將髖部完全伸展（Lockout），頂峰收縮停頓 1-2 秒。'}, {type:'err', text:'⚠️ 用腰椎過度伸展（即係夾硬挺腰）去頂起重量，會引致下背劇痛；頭部如果跟隨身體仰後，會令脊椎失去中立位。'}] },
-      { id: 'b2', name: 'Lat Pulldown (滑輪下拉)', target: '主練：背闊肌、大圓肌、肱二頭肌', muscleGroup: 'back', lcsdSetting: '調整大腿卡位擋板，確保雙腿被穩固壓住。雙手以闊握（比肩寬約1.5倍）正手握住上方橫槓。', defaultWeight: 30, defaultReps: 10, weightStep: 5, sets: 3, svgPreset: 'pulldown', tips: [{type:'ok', text:'啟動時先做「沉肩」（肩胛骨下沉），然後幻想用手肘帶動向腰部方向拉低，橫槓拉至上胸位置，挺胸迎槓。'}, {type:'err', text:'⚠️ 身體過度向後傾斜變成「划船」；單靠手臂（二頭肌）發力死拉；或者含胸寒背下拉，都會令背部毫無感覺兼傷肩。'}] },
-      { id: 'b3', name: 'Seated Row (坐姿划船)', target: '主練：斜方肌中下部、菱形肌、背闊肌', muscleGroup: 'back', lcsdSetting: '使用多功能划船機，調整胸前擋板，確保雙手伸直時剛好能夠握住手柄。雙腳踩實踏板。', defaultWeight: 25, defaultReps: 10, weightStep: 5, sets: 3, svgPreset: 'row', tips: [{type:'ok', text:'保持軀幹絕對穩定。呼氣時肩胛骨先向後收緊（夾背），手肘貼近身體兩側向後拉，想像背部夾住一支筆。'}, {type:'err', text:'⚠️ 聳肩拉會令上斜方肌過度緊張（練完頸梗膊痛）；利用腰部前後搖擺借力（Cheat Row）會大幅增加下背椎間盤受傷風險。'}] },
-      { id: 'b4', name: 'DB Curl (二頭彎舉)', target: '主練：肱二頭肌、肱肌 (手臂前側)', muscleGroup: 'arm', lcsdSetting: '雙手各持合適重量嘅啞鈴，掌心向前（旋後位），挺胸收腹，肩胛骨微收固定。', defaultWeight: 8, defaultReps: 12, weightStep: 1, sets: 3, svgPreset: 'curl', tips: [{type:'ok', text:'大臂緊貼身體兩側保持「絕對靜止」！集中控制二頭肌發力將啞鈴舉起，下放時控制離心收縮（慢放約2-3秒）。'}, {type:'err', text:'⚠️ 舉起時手肘向前移動（借用前三角肌發力）；或者利用身體前後搖晃（借力）甩起啞鈴，完全無練到二頭肌。'}] },
-      { id: 'b5', name: 'Dead Bug (死蟲運動)', target: '主練：核心肌群(強調骨盆穩定及腹橫肌)', muscleGroup: 'core', lcsdSetting: '平躺於瑜伽墊上，雙手伸直指向天花板，雙腳屈膝 90 度舉起（姿勢似反轉嘅甲蟲）。', defaultWeight: 0, defaultReps: 30, weightStep: 5, sets: 3, isTimeBased: true, svgPreset: 'deadbug', tips: [{type:'ok', text:'【最關鍵】：下背部必須用力「貼死」地面，不能有任何空隙。對側手腳（如左手右腳）慢慢下放至接近地面，停頓1秒後還原。'}, {type:'err', text:'⚠️ 下放手腳時腰椎拱起（與地面產生空隙），代表核心無法抵抗伸展，壓力已經全部轉移至腰椎，隨時拉傷。'}] },
+      { id: 'b0_warmup', isWarmup: true, name: '熱身：滑步機', duration: 360, svgPreset: 'cardio', tips: [{type:'ok', text:'阻力4-6，全身預熱。'}, {type:'err', text:'熱身不應過度消耗體力。'}] },
+      { id: 'b1', name: 'Hip Thrust (啞鈴臀推)', target: '主練：臀大肌、膕繩肌', muscleGroup: 'leg', lcsdSetting: '肩胛骨下緣靠在健身椅邊緣。啞鈴放於髖關節處。雙腳與肩同寬。', defaultWeight: 16, defaultReps: 12, sets: 3, svgPreset: 'hipthrust', tips: [{type:'ok', text:'頂點時小腿與地面呈 90 度。以臀部發力將髖部伸展，頂峰收縮停頓 1-2 秒。'}, {type:'err', text:'避免腰椎過度伸展；頭部保持脊椎中立。'}] },
+      { id: 'b2', name: 'Lat Pulldown (滑輪下拉)', target: '主練：背闊肌、大圓肌、肱二頭肌', muscleGroup: 'back', lcsdSetting: '調整大腿擋板。雙手寬握上方橫槓。', defaultWeight: 30, defaultReps: 10, sets: 3, svgPreset: 'pulldown', tips: [{type:'ok', text:'啟動時先沉肩，手肘向腰部方向拉低，橫槓拉至上胸位置。'}, {type:'err', text:'避免身體過度後傾或單靠手臂發力。'}] },
+      { id: 'b3', name: 'Seated Row (坐姿划船)', target: '主練：斜方肌中下部、菱形肌、背闊肌', muscleGroup: 'back', lcsdSetting: '調整胸前擋板，雙手伸直時可握住手柄。雙腳踩實踏板。', defaultWeight: 25, defaultReps: 10, sets: 3, svgPreset: 'row', tips: [{type:'ok', text:'保持軀幹穩定。呼氣時肩胛骨向後收緊，手肘貼近身體向後拉。'}, {type:'err', text:'避免聳肩；避免用腰部前後搖擺借力。'}] },
+      { id: 'b4', name: 'DB Curl (二頭彎舉)', target: '主練：肱二頭肌、肱肌', muscleGroup: 'arm', lcsdSetting: '雙手各持合適重量啞鈴，挺胸收腹，肩胛骨微收固定。', defaultWeight: 8, defaultReps: 12, sets: 3, svgPreset: 'curl', tips: [{type:'ok', text:'大臂緊貼身體保持靜止。控制二頭肌發力，下放時控制離心收縮。'}, {type:'err', text:'避免舉起時手肘向前移動或身體搖晃借力。'}] },
+      { id: 'b5', name: 'Dead Bug (死蟲運動)', target: '主練：核心肌群', muscleGroup: 'core', lcsdSetting: '平躺於瑜伽墊，雙手指向天花板，雙腳屈膝 90 度舉起。', defaultWeight: 0, defaultReps: 30, sets: 3, isTimeBased: true, svgPreset: 'deadbug', tips: [{type:'ok', text:'下背部必須貼實地面。對側手腳慢慢下放至接近地面，停頓後還原。'}, {type:'err', text:'下放時避免腰椎拱起。'}] },
       
-      { id: 'c0_warmup', isWarmup: true, name: '熱身：動態拉伸', duration: 300, svgPreset: 'cardio', tips: [{type:'ok', text:'無重深蹲及前後開弓步。保持微微出汗強度（RPE 4-5）。'}, {type:'err', text:'⚠️ 直接做大重量極易拉傷。'}] },
-      { id: 'c1', name: 'Split Squat (分腿蹲)', target: '主練：單側大腿前側、臀大肌、平衡力', muscleGroup: 'leg', lcsdSetting: '一隻腳向前跨大步，後腳腳尖踩在身後地面（或搭在長凳上增加難度）。雙手可持啞鈴。', defaultWeight: 6, defaultReps: 10, weightStep: 1, sets: 3, svgPreset: 'squat', tips: [{type:'ok', text:'下蹲時上半身微前傾，重心放於前腳腳踭，下蹲至前腳大腿與地面平行。後腳只作平衡，盡量減少發力。'}, {type:'err', text:'⚠️ 膝關節過度前傾超過腳尖太多會令髕骨受壓；兩腳左右站距太窄（踩直鋼線）會令身體失去平衡。'}] },
-      { id: 'c2', name: 'Bench Press (啞鈴臥推)', target: '主練：胸大肌、三角肌前束、三頭肌', muscleGroup: 'chest', lcsdSetting: '平躺於訓練椅。眼睛應對齊啞鈴正下方。雙腳踩實地面，臀部及上背緊貼椅面。', defaultWeight: 35, defaultReps: 10, weightStep: 2.5, sets: 3, svgPreset: 'benchpress', tips: [{type:'ok', text:'收緊肩胛骨（挺起胸膛）。下放時控制速度，輕觸中下胸；推起時呼氣，手肘微曲不鎖死。'}, {type:'err', text:'⚠️ 臀部離開椅面（借力推）；手肘向兩側打開成90度（極易令肩關節受傷），手肘應與身體保持約45-60度夾角。'}] },
-      { id: 'c3', name: 'Assisted Pull-up (輔助引體)', target: '主練：背闊肌、大圓肌、核心', muscleGroup: 'back', lcsdSetting: '康文署輔助引體上升機，插針重量越大，提供嘅輔助力就越大（即係越輕易）。雙膝跪在軟墊上。', defaultWeight: 35, defaultReps: 8, weightStep: 5, sets: 3, svgPreset: 'pulldown', tips: [{type:'ok', text:'雙手闊握，先啟動肩胛骨下沉（沉肩），挺胸，將鎖骨方向拉向橫槓。頂峰擠壓背肌1秒，控制速度慢慢下放。'}, {type:'err', text:'⚠️ 圓肩發力（只用二頭肌拉）；身體隨意搖晃喪失張力；下放速度太快導致肌肉撕裂風險。'}] },
-      { id: 'c4_hiit', isHiit: true, name: 'HIIT 帶氧', rounds: 8, sprintDuration: 30, recoverDuration: 60, svgPreset: 'cardio', tips: [{type:'ok', text:'嚴格遵守計時！30秒「全力衝刺」（心跳率推至85%以上），然後60秒「動態恢復」（慢行或慢踏）。循環8次。'}, {type:'err', text:'⚠️ 衝刺期未盡全力（得個殼）；恢復期完全停低坐低，會令血液滯留下肢引致頭暈。'}] }
+      { id: 'c0_warmup', isWarmup: true, name: '熱身：動態拉伸', duration: 300, svgPreset: 'cardio', tips: [{type:'ok', text:'無重深蹲及前後開弓步。'}, {type:'err', text:'未熱身直接做大重量易拉傷。'}] },
+      { id: 'c1', name: 'Split Squat (分腿蹲)', target: '主練：大腿前側、臀大肌', muscleGroup: 'leg', lcsdSetting: '一腳跨大步，後腳尖踩地或搭在長凳上。雙手持啞鈴。', defaultWeight: 6, defaultReps: 10, sets: 3, svgPreset: 'squat', tips: [{type:'ok', text:'下蹲時上半身微前傾，重心放於前腳，下蹲至前腳大腿與地面平行。'}, {type:'err', text:'膝關節避免過度前傾；站距過窄會失去平衡。'}] },
+      { id: 'c2', name: 'Bench Press (啞鈴臥推)', target: '主練：胸大肌、三角肌前束', muscleGroup: 'chest', lcsdSetting: '平躺於訓練椅，眼睛對齊啞鈴下方。雙腳踩實地面。', defaultWeight: 35, defaultReps: 10, sets: 3, svgPreset: 'benchpress', tips: [{type:'ok', text:'收緊肩胛骨。下放時控制速度；推起時呼氣，手肘微曲不鎖死。'}, {type:'err', text:'避免臀部離開椅面；手肘應與身體保持約45-60度。'}] },
+      { id: 'c3', name: 'Assisted Pull-up (輔助引體)', target: '主練：背闊肌、大圓肌', muscleGroup: 'back', lcsdSetting: '使用輔助引體上升機。雙膝跪在軟墊上。', defaultWeight: 35, defaultReps: 8, sets: 3, svgPreset: 'pulldown', tips: [{type:'ok', text:'雙手寬握，先啟動肩胛骨下沉，挺胸上拉。頂峰擠壓，慢慢下放。'}, {type:'err', text:'避免圓肩發力及身體隨意搖晃。'}] },
+      { id: 'c4_hiit', isHiit: true, name: 'HIIT 帶氧', rounds: 8, sprintDuration: 30, recoverDuration: 60, svgPreset: 'cardio', tips: [{type:'ok', text:'30秒衝刺，然後60秒動態恢復。循環8次。'}, {type:'err', text:'恢復期避免完全靜止坐下。'}] }
     ];
 
     function getFullPool() { return baselineExercises.concat(customExercises); }
@@ -360,16 +339,13 @@
       localStorage.setItem('gym_coach_body_history', JSON.stringify(bodyHistory));
     }
 
-    // ---------------------------------
-    // HISTORY & BODY STATS RENDERING
-    // ---------------------------------
     function renderHistory() {
       const historyList = document.getElementById('workout-history-list');
       if(!historyList) return;
       historyList.innerHTML = '';
       const dates = Object.keys(workoutLogs).sort().reverse();
       if(dates.length === 0) {
-         historyList.innerHTML = '<p class="text-zinc-500 text-[11px] text-center py-4">暫時未有任何起鐵紀錄</p>';
+         historyList.innerHTML = '<p class="text-zinc-500 text-[11px] text-center py-4">暫無記錄</p>';
       } else {
          dates.forEach(d => {
             let html = `<div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800 mb-2"><h5 class="text-emerald-400 text-xs font-bold mb-2 border-b border-zinc-800 pb-1.5">${d}</h5><div class="space-y-2">`;
@@ -390,7 +366,7 @@
       if(!list) return;
       list.innerHTML = '';
       if(bodyHistory.length === 0) {
-          list.innerHTML = '<p class="text-[10px] text-zinc-500 text-center py-2">未有數據</p>';
+          list.innerHTML = '<p class="text-[10px] text-zinc-500 text-center py-2">暫無數據</p>';
       } else {
           [...bodyHistory].reverse().forEach(b => {
               list.innerHTML += `<div class="flex justify-between items-center text-[11px] bg-zinc-900 px-3 py-2 rounded-lg border border-zinc-800"><span class="text-zinc-400 font-mono">${b.date}</span><span class="text-emerald-300 font-bold tracking-wide">${b.weight} kg <span class="text-zinc-600 mx-1">|</span> ${b.bf}%</span></div>`;
@@ -401,19 +377,57 @@
     function saveBodyStats() {
       const w = parseFloat(document.getElementById('input-weight').value);
       const bf = parseFloat(document.getElementById('input-bf').value);
-      if(!w || !bf) return showToast("請輸入有效數字！", true);
+      if(!w || !bf) return showToast("請輸入有效數字。", true);
       const d = getTodayStr();
       bodyHistory = bodyHistory.filter(x => x.date !== d);
       bodyHistory.push({date: d, weight: w, bf: bf});
-      saveData(); renderBodyStats(); showToast("體重及體脂已保存！");
+      saveData(); renderBodyStats(); showToast("數據已儲存。");
     }
     
-    function exportToCSV() { showToast("CSV 匯出成功！(儲存於瀏覽器)"); }
-    function clearAllWorkoutLogs() { workoutLogs = {}; saveData(); renderWorkout(); renderHistory(); showToast("已清空所有紀錄"); }
+    function exportToCSV() { 
+        if(Object.keys(workoutLogs).length === 0) return showToast("沒有記錄可匯出。", true);
+        
+        let csv = "Date,Exercise,Set,Weight(kg),Reps/Seconds\n";
+        const pool = getFullPool();
+        
+        Object.keys(workoutLogs).sort().reverse().forEach(date => {
+            const dayLogs = workoutLogs[date];
+            for (let exId in dayLogs) {
+                const exName = pool.find(e => e.id === exId)?.name || exId;
+                dayLogs[exId].forEach(s => {
+                    csv += `${date},"${exName}",${s.set},${s.weight},${s.reps}\n`;
+                });
+            }
+        });
 
-    // ---------------------------------
-    // ROUTINE MANAGER LOGIC 
-    // ---------------------------------
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const file = new File([blob], `Workout_History_${getTodayStr()}.csv`, { type: 'text/csv' });
+
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({
+                title: '健身紀錄 CSV',
+                text: '這是我的健身訓練紀錄！',
+                files: [file]
+            }).then(() => showToast("分享成功。")).catch(e => console.log(e));
+        } else {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url; a.download = `Workout_History_${getTodayStr()}.csv`;
+            a.click(); URL.revokeObjectURL(url);
+            showToast("CSV 已下載。");
+        }
+    }
+    
+    function clearAllWorkoutLogs() { 
+        if(confirm("確定要清除所有訓練歷史數據？此動作無法復原。")) {
+            workoutLogs = {}; 
+            saveData(); 
+            renderWorkout(); 
+            renderHistory(); 
+            showToast("記錄已清空。"); 
+        }
+    }
+
     function openRoutineManager() { 
         document.getElementById('routine-manager-modal').classList.remove('hidden'); 
         filterRoutineLibrary();
@@ -463,7 +477,7 @@
     function createNewCustomExercise() {
         const name = document.getElementById('cust-name').value.trim();
         const muscle = document.getElementById('cust-muscle').value;
-        if(!name) return showToast("請輸入動作名稱！", true);
+        if(!name) return showToast("請輸入動作名稱。", true);
         
         const newEx = {
             id: 'cust_' + Date.now(),
@@ -473,7 +487,6 @@
             lcsdSetting: '自訂動作',
             defaultWeight: 0,
             defaultReps: 10,
-            weightStep: 2.5,
             sets: 3,
             svgPreset: 'cardio',
             tips: [{type:'ok', text:'自訂訓練動作，請注意安全。'}]
@@ -483,12 +496,9 @@
         saveData();
         document.getElementById('cust-name').value = '';
         filterRoutineLibrary();
-        showToast("動作已加入資料庫！");
+        showToast("動作已加入。");
     }
 
-    // ---------------------------------
-    // MAIN WORKOUT RENDERER
-    // ---------------------------------
     function checkStationDone(ex) {
       const d = getTodayStr(); if(!workoutLogs[d] || !workoutLogs[d][ex.id]) return false;
       const logged = workoutLogs[d][ex.id].length;
@@ -512,25 +522,38 @@
     }
     
     function utTick() {
-      if (uniTimer.paused) return; uniTimer.remaining--; utUpdateVisuals();
+      if (uniTimer.paused) return; 
+      
+      if (uniTimer.mode === 'stopwatch') {
+          uniTimer.remaining++; 
+          utUpdateVisuals();
+          return;
+      }
+
+      uniTimer.remaining--; utUpdateVisuals();
       if (uniTimer.remaining <= 3 && uniTimer.remaining > 0) playBeep(783.99, 0.08);
       if (uniTimer.remaining <= 0) {
         clearInterval(uniTimer.interval); playBeep(880, 0.45);
         if (uniTimer.mode === 'rest') { if(navigator.vibrate) navigator.vibrate([150, 80, 150]); utClose(); } 
-        else if (uniTimer.mode === 'warmup') { utClose(); logSet(uniTimer.exId, 1, true); showToast("🔥 熱身完成！"); }
+        else if (uniTimer.mode === 'warmup') { utClose(); logSet(uniTimer.exId, 1, true); showToast("熱身完成。"); }
         else if (uniTimer.mode === 'set') { utClose(); logSet(uniTimer.exId, uniTimer.setNum || 1, true); }
         else if (uniTimer.mode === 'hiit') {
           if (uniTimer.hiitPhase === 'sprint') { utStart('hiit', 60, { hiitPhase: 'recover', hiitRound: uniTimer.hiitRound, exId: uniTimer.exId }); playBeep(440, 0.35); } 
           else {
             const nextRound = uniTimer.hiitRound + 1;
-            if (nextRound > 8) { playBeep(987.77, 0.6); utClose(); logSet(uniTimer.exId, 1, true); showToast("🔥 恭喜！完成 HIIT！"); } 
+            if (nextRound > 8) { playBeep(987.77, 0.6); utClose(); logSet(uniTimer.exId, 1, true); showToast("HIIT 已完成。"); } 
             else { utStart('hiit', 30, { hiitPhase: 'sprint', hiitRound: nextRound, exId: uniTimer.exId }); playBeep(783.99, 0.35); }
           }
         }
       }
     }
     
-    function utUpdateVisuals() { document.getElementById('ut-time').innerText = uniTimer.remaining; document.getElementById('ut-progress').style.width = `${(uniTimer.remaining / uniTimer.total) * 100}%`; }
+    function utUpdateVisuals() { 
+        document.getElementById('ut-time').innerText = uniTimer.remaining; 
+        if(uniTimer.mode !== 'stopwatch') {
+            document.getElementById('ut-progress').style.width = `${(uniTimer.remaining / uniTimer.total) * 100}%`; 
+        }
+    }
     
     function utUpdateUI() {
       utUpdateVisuals();
@@ -541,9 +564,13 @@
       time.className = "text-[44px] font-black font-mono leading-none tracking-tighter";
       prog.className = "h-full w-full ut-bar-transition"; btnAdd.classList.remove('hidden');
 
-      if (uniTimer.mode === 'rest') { badge.classList.add('bg-emerald-500'); badge.innerText = "REST 休息"; title.innerText = uniTimer.title || "深呼吸準備"; time.classList.add('text-emerald-400'); prog.classList.add('bg-emerald-500'); } 
-      else if (uniTimer.mode === 'warmup') { badge.classList.add('bg-blue-400'); badge.innerText = "WARMUP 熱身"; title.innerText = uniTimer.title || "保持微出汗狀態"; time.classList.add('text-blue-300'); prog.classList.add('bg-blue-400'); }
-      else if (uniTimer.mode === 'set') { badge.classList.add('bg-amber-500'); badge.innerText = "ACTION 進行中"; title.innerText = uniTimer.title || `Set ${uniTimer.setNum} 倒數中...`; time.classList.add('text-amber-400'); prog.classList.add('bg-amber-500'); }
+      if (uniTimer.mode === 'rest') { badge.classList.add('bg-emerald-500'); badge.innerText = "REST 休息"; title.innerText = uniTimer.title || "準備下一組"; time.classList.add('text-emerald-400'); prog.classList.add('bg-emerald-500'); } 
+      else if (uniTimer.mode === 'warmup') { badge.classList.add('bg-blue-400'); badge.innerText = "WARMUP 熱身"; title.innerText = uniTimer.title || "進行中"; time.classList.add('text-blue-300'); prog.classList.add('bg-blue-400'); }
+      else if (uniTimer.mode === 'set') { badge.classList.add('bg-amber-500'); badge.innerText = "ACTION 進行中"; title.innerText = uniTimer.title || `Set ${uniTimer.setNum} 倒數中`; time.classList.add('text-amber-400'); prog.classList.add('bg-amber-500'); }
+      else if (uniTimer.mode === 'stopwatch') { 
+          btnAdd.classList.add('hidden'); 
+          badge.classList.add('bg-fuchsia-500'); badge.innerText = "ACTION 順數中"; title.innerText = uniTimer.title || `進行中`; time.classList.add('text-fuchsia-400'); prog.className = "h-full w-full bg-fuchsia-500 animate-pulse"; 
+      }
       else if (uniTimer.mode === 'hiit') {
         btnAdd.classList.add('hidden'); 
         if (uniTimer.hiitPhase === 'sprint') { badge.classList.add('bg-red-500', 'animate-pulse'); badge.innerText = "SPRINT 衝刺"; title.innerHTML = `Round <span class="text-white">${uniTimer.hiitRound}</span> / 8`; time.classList.add('text-red-400'); prog.classList.add('bg-red-500'); } 
@@ -554,8 +581,37 @@
     
     function utPause() { uniTimer.paused = !uniTimer.paused; const btn = document.getElementById('btn-ut-pause'); if (uniTimer.paused) { btn.innerHTML = `<i class="fa-solid fa-play text-sm"></i>`; btn.classList.replace('bg-zinc-800', 'bg-white'); btn.classList.replace('text-zinc-300', 'text-black'); } else { btn.innerHTML = `<i class="fa-solid fa-pause text-sm"></i>`; btn.classList.replace('bg-white', 'bg-zinc-800'); btn.classList.replace('text-black', 'text-zinc-300'); } }
     function utAdd15s() { uniTimer.remaining += 15; uniTimer.total += 15; utUpdateVisuals(); }
-    function utStop() { utClose(); showToast("計時已中止"); }
+    
+    function utStop() { 
+        if (uniTimer.mode === 'stopwatch') {
+            const rEl = document.getElementById(`r-${uniTimer.exId}-${uniTimer.setNum}`);
+            if(rEl) {
+                rEl.value = uniTimer.remaining; 
+                updateVal(uniTimer.exId, uniTimer.setNum, 'r', uniTimer.remaining);
+            }
+            showToast("計時停止。");
+        } else {
+            showToast("計時已中止。"); 
+        }
+        utClose(); 
+    }
+    
     function utClose() { if(uniTimer.interval) clearInterval(uniTimer.interval); uniTimer.active = false; document.getElementById('universal-timer-banner').classList.add('translate-y-full'); document.getElementById('main-content').classList.remove('pb-[75px]'); setTimeout(() => { document.getElementById('universal-timer-banner').classList.add('hidden'); }, 300); renderWorkout(); }
+
+    function moveExercise(direction) {
+        const arr = assignedRoutines[currentDay];
+        const idx = currentStationIndex;
+        if(direction === -1 && idx > 0) {
+            [arr[idx-1], arr[idx]] = [arr[idx], arr[idx-1]];
+            currentStationIndex--;
+            showToast("卡片已移前");
+        } else if(direction === 1 && idx < arr.length - 1) {
+            [arr[idx+1], arr[idx]] = [arr[idx], arr[idx+1]];
+            currentStationIndex++;
+            showToast("卡片已移後");
+        }
+        saveData(); renderWorkout();
+    }
 
     function renderWorkout() {
       const activeIds = assignedRoutines[currentDay] || []; const pool = getFullPool();
@@ -566,7 +622,7 @@
 
       if (activeExs.length === 0) {
         barContainer.innerHTML = '';
-        container.innerHTML = `<div class="bg-zinc-800 rounded-xl p-8 text-center border border-zinc-750 flex-1 flex flex-col justify-center items-center h-full"><i class="fa-solid fa-bed text-4xl text-zinc-600 mb-4"></i><p class="text-xs text-zinc-400 mb-4 leading-relaxed">😴 今日課表目前為空。<br>點擊上方「編輯課表」自組動作啦！</p><button onclick="openRoutineManager()" class="mt-2 bg-emerald-500 text-zinc-950 px-4 py-2 rounded-lg font-bold text-xs">去編輯課表</button></div>`;
+        container.innerHTML = `<div class="bg-zinc-800 rounded-xl p-8 text-center border border-zinc-750 flex-1 flex flex-col justify-center items-center h-full"><i class="fa-solid fa-bed text-4xl text-zinc-600 mb-4"></i><p class="text-xs text-zinc-400 mb-4 leading-relaxed">今日課表為空。<br>請點擊上方編輯課表加入動作。</p><button onclick="openRoutineManager()" class="mt-2 bg-emerald-500 text-zinc-950 px-4 py-2 rounded-lg font-bold text-xs shadow-lg active:scale-95 transition-transform">編輯課表</button></div>`;
         btnPrev.disabled = true; btnNext.disabled = true; return;
       }
 
@@ -586,7 +642,7 @@
 
       btnPrev.disabled = (currentStationIndex === 0); btnNext.disabled = (currentStationIndex === activeExs.length - 1);
       if(currentStationIndex === activeExs.length - 1) {
-        btnNext.innerHTML = `<i class="fa-solid fa-flag-checkered"></i> 完成課表`;
+        btnNext.innerHTML = `完成課表`;
         btnNext.classList.replace('bg-emerald-500', 'bg-amber-500'); btnNext.classList.replace('hover:bg-emerald-400', 'hover:bg-amber-400'); btnNext.classList.replace('shadow-emerald-500/20', 'shadow-amber-500/20');
       } else {
         btnNext.innerHTML = `下一站 <i class="fa-solid fa-arrow-right"></i>`;
@@ -597,37 +653,56 @@
       const card = document.createElement('div'); card.className = 'bg-zinc-800 rounded-xl border border-zinc-750 overflow-hidden shadow-lg mb-2 shrink-0';
       const svgStr = svgPresets[ex.svgPreset] || svgPresets['cardio'];
 
+      const targetTag = ex.isWarmup ? "熱身" : (ex.isHiit ? "帶氧燃脂" : ex.target);
+      const badgeColor = ex.isWarmup ? "text-amber-300 bg-amber-500/10 border-amber-500/20" : (ex.isHiit ? "text-red-400 bg-red-500/10 border-red-500/20" : "text-emerald-400 bg-emerald-500/15 border-emerald-500/30");
+
+      const cardHeaderHtml = `
+        <div class="p-3 border-b border-zinc-750 bg-gradient-to-r from-zinc-800 to-zinc-850 flex justify-between items-center gap-3">
+            <button onclick="moveExercise(-1)" class="w-10 h-10 bg-zinc-900 border border-zinc-700 rounded-lg text-zinc-400 hover:text-white active:scale-95 disabled:opacity-20 disabled:active:scale-100 flex items-center justify-center transition-all shrink-0" ${currentStationIndex === 0 ? 'disabled' : ''}><i class="fa-solid fa-chevron-left text-sm"></i></button>
+            <div class="flex-1 text-center min-w-0 flex flex-col items-center">
+                <span class="inline-block text-[9px] ${badgeColor} border px-2 py-0.5 rounded-full font-bold tracking-wide mb-1.5 truncate max-w-full">${targetTag}</span>
+                <h3 class="text-sm font-black text-zinc-100 truncate w-full">${ex.name}</h3>
+            </div>
+            <button onclick="moveExercise(1)" class="w-10 h-10 bg-zinc-900 border border-zinc-700 rounded-lg text-zinc-400 hover:text-white active:scale-95 disabled:opacity-20 disabled:active:scale-100 flex items-center justify-center transition-all shrink-0" ${currentStationIndex === activeExs.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-chevron-right text-sm"></i></button>
+        </div>`;
+
       if (ex.isWarmup) {
          const isDone = checkStationDone(ex);
-         card.innerHTML = `
-           <div class="p-4 bg-zinc-800 border-b border-zinc-750 flex items-center gap-3">
-             <div class="w-16 h-16 shrink-0">${svgStr}</div>
-             <div><span class="text-[9px] bg-amber-500/10 text-amber-300 font-bold px-2 py-0.5 rounded-full">熱身</span><h3 class="text-sm font-black text-zinc-100 mt-1">${ex.name}</h3></div>
-           </div>
-           <div class="p-5 text-xs text-zinc-400 space-y-4">
-             <p class="leading-relaxed text-center"><i class="fa-solid fa-circle-info text-amber-500 mr-1"></i> ${ex.tips[0].text}</p>
-             <p class="leading-relaxed text-center text-red-400 bg-red-950/30 p-2 rounded">${ex.tips[1].text}</p>
-             ${isDone ? `<button onclick="unlogSet('${ex.id}', 1)" class="w-full bg-emerald-500 text-zinc-950 font-black py-3.5 rounded-xl shadow-lg active:scale-95 transition-all text-sm"><i class="fa-solid fa-check-circle"></i> 熱身已完成 (點擊重設)</button>` : `<button onclick="utStart('warmup', ${ex.duration}, { exId: '${ex.id}' })" class="w-full bg-blue-500 hover:bg-blue-400 text-zinc-950 font-black py-3.5 rounded-xl shadow-lg shadow-blue-500/30 active:scale-95 transition-all text-sm"><i class="fa-solid fa-play"></i> 開啟 6 分鐘熱身計時</button>`}
+         card.innerHTML = cardHeaderHtml + `
+           <div class="bg-zinc-800/30">
+               <div class="p-4 flex items-start gap-4">
+                 <div class="w-20 h-20 bg-zinc-900 rounded-xl p-1.5 border border-zinc-700/50 flex items-center justify-center shadow-inner shrink-0 relative overflow-hidden"><div class="absolute inset-0 bg-emerald-500/5 blur-xl"></div>${svgStr}</div>
+                 <div class="flex-1 space-y-2 text-xs">
+                    <p class="text-zinc-300 leading-relaxed"><i class="fa-solid fa-circle-info text-amber-500 mr-1"></i> ${ex.tips[0].text}</p>
+                    <p class="text-red-400 bg-red-950/30 p-2 rounded leading-relaxed">${ex.tips[1].text}</p>
+                 </div>
+               </div>
+               <div class="px-4 pb-4">
+                 ${isDone ? `<button onclick="unlogSet('${ex.id}', 1)" class="w-full bg-emerald-500 text-zinc-950 font-black py-3.5 rounded-xl shadow-lg active:scale-95 transition-all text-sm">重設</button>` : `<button onclick="utStart('warmup', ${ex.duration}, { exId: '${ex.id}' })" class="w-full bg-blue-500 hover:bg-blue-400 text-zinc-950 font-black py-3.5 rounded-xl shadow-lg shadow-blue-500/30 active:scale-95 transition-all text-sm"><i class="fa-solid fa-play"></i> 計時開始</button>`}
+               </div>
            </div>`;
          container.appendChild(card); return;
       }
 
       if (ex.isHiit) {
         const isDone = checkStationDone(ex);
-        card.innerHTML = `
-           <div class="p-4 bg-zinc-800 border-b border-zinc-750 flex items-center gap-3">
-             <div class="w-16 h-16 shrink-0">${svgStr}</div>
-             <div><span class="text-[9px] bg-red-500/20 text-red-400 font-black px-2 py-0.5 rounded-full uppercase tracking-wider">CARDIO 帶氧極速燃脂</span><h3 class="text-sm font-black text-zinc-100 mt-1">${ex.name}</h3></div>
-           </div>
-           <div class="p-5 text-xs text-zinc-400 space-y-4">
-             <div class="grid grid-cols-3 gap-2 w-full bg-zinc-900 p-3 rounded-xl border border-zinc-800 text-center font-mono">
-                <div><span class="text-zinc-500 block text-[9px] font-sans">衝刺時間</span><span class="font-bold text-red-400 text-sm">30s</span></div>
-                <div><span class="text-zinc-500 block text-[9px] font-sans">恢復時間</span><span class="font-bold text-emerald-400 text-sm">60s</span></div>
-                <div><span class="text-zinc-500 block text-[9px] font-sans">循環</span><span class="font-bold text-amber-400 text-sm">8 輪</span></div>
-             </div>
-             <p class="leading-relaxed text-center mt-4 text-zinc-300 w-full"><i class="fa-solid fa-check text-emerald-500"></i> ${ex.tips[0].text}</p>
-             <p class="leading-relaxed text-center mt-2 text-red-400 bg-red-950/30 p-2 rounded w-full">${ex.tips[1].text}</p>
-             ${isDone ? `<button onclick="unlogSet('${ex.id}', 1)" class="w-full bg-emerald-500 text-zinc-950 font-black py-4 rounded-xl shadow-lg active:scale-95 transition-all text-sm mt-4"><i class="fa-solid fa-check-circle"></i> 恭喜！HIIT 已完成 (點擊重設)</button>` : `<button onclick="utStart('hiit', 30, { hiitRound: 1, hiitPhase: 'sprint', exId: '${ex.id}' })" class="mt-4 w-full bg-red-500 hover:bg-red-400 text-zinc-950 font-black py-4 rounded-xl shadow-lg shadow-red-500/30 active:scale-95 transition-all text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-bolt"></i> 展開全局浮動 HIIT 計時</button>`}
+        card.innerHTML = cardHeaderHtml + `
+           <div class="bg-zinc-800/30">
+               <div class="p-4 flex items-start gap-4">
+                 <div class="w-20 h-20 bg-zinc-900 rounded-xl p-1.5 border border-zinc-700/50 flex items-center justify-center shadow-inner shrink-0 relative overflow-hidden"><div class="absolute inset-0 bg-emerald-500/5 blur-xl"></div>${svgStr}</div>
+                 <div class="flex-1 text-xs">
+                     <div class="grid grid-cols-1 gap-1.5 w-full bg-zinc-900 p-2 rounded-lg border border-zinc-800 text-center font-mono">
+                        <div class="flex justify-between px-2"><span class="text-zinc-500 font-sans">衝刺時間</span><span class="font-bold text-red-400">30s</span></div>
+                        <div class="flex justify-between px-2"><span class="text-zinc-500 font-sans">恢復時間</span><span class="font-bold text-emerald-400">60s</span></div>
+                        <div class="flex justify-between px-2 border-t border-zinc-800 pt-1.5 mt-0.5"><span class="text-zinc-500 font-sans">循環</span><span class="font-bold text-amber-400">8 輪</span></div>
+                     </div>
+                 </div>
+               </div>
+               <div class="px-4 pb-4">
+                 <p class="text-xs leading-relaxed text-center mb-2 text-zinc-300"><i class="fa-solid fa-check text-emerald-500"></i> ${ex.tips[0].text}</p>
+                 <p class="text-xs leading-relaxed text-center mb-4 text-red-400 bg-red-950/30 p-2 rounded">${ex.tips[1].text}</p>
+                 ${isDone ? `<button onclick="unlogSet('${ex.id}', 1)" class="w-full bg-emerald-500 text-zinc-950 font-black py-4 rounded-xl shadow-lg active:scale-95 transition-all text-sm mt-4">重設</button>` : `<button onclick="utStart('hiit', 30, { hiitRound: 1, hiitPhase: 'sprint', exId: '${ex.id}' })" class="w-full bg-red-500 hover:bg-red-400 text-zinc-950 font-black py-4 rounded-xl shadow-lg shadow-red-500/30 active:scale-95 transition-all text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-bolt"></i> 開始 HIIT 計時</button>`}
+               </div>
            </div>`;
          container.appendChild(card); return;
       }
@@ -638,7 +713,7 @@
         else tipsHtml += `<li class="flex items-start gap-2 text-amber-300 bg-amber-500/10 p-2 rounded-lg border border-amber-500/20"><span class="text-amber-500 mt-0.5"><i class="fa-solid fa-warning"></i></span><span class="leading-relaxed">${t.text}</span></li>`;
       });
 
-      let lastPerfStr = '首次操練：無腦跟隨預設。'; const dates = Object.keys(workoutLogs).sort().reverse();
+      let lastPerfStr = '未有記錄。'; const dates = Object.keys(workoutLogs).sort().reverse();
       for(let d of dates) {
         if(workoutLogs[d] && workoutLogs[d][ex.id] && workoutLogs[d][ex.id].length > 0) {
            const s = workoutLogs[d][ex.id][0]; lastPerfStr = `上次紀錄 (${d}): ` + (ex.isTimeBased ? `${s.reps}秒` : `${s.weight}kg x ${s.reps}下`); break;
@@ -655,9 +730,10 @@
         } else if(activeInputs[`${ex.id}-${s}`]) {
           valW = activeInputs[`${ex.id}-${s}`].weight; valR = activeInputs[`${ex.id}-${s}`].reps;
         }
-        const isThisTimerRunning = uniTimer.active && uniTimer.mode === 'set' && uniTimer.exId === ex.id && uniTimer.setNum === s;
-        const btnTxt = isThisTimerRunning ? `計時中` : `<i class="fa-solid fa-play mr-1"></i> 開始`;
-        const btnClass = isThisTimerRunning ? "h-9 px-2.5 rounded-lg text-[10px] font-black timer-flashing shadow-lg w-[70px]" : "h-9 px-2.5 rounded-lg text-[10px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 w-[70px] active:scale-95";
+        
+        const isThisTimerRunning = uniTimer.active && uniTimer.exId === ex.id && uniTimer.setNum === s;
+        const btnTxt = isThisTimerRunning ? `<i class="fa-solid fa-stop text-[10px]"></i> 停止` : `<i class="fa-solid fa-play mr-1"></i> 順數`;
+        const btnClass = isThisTimerRunning ? "h-9 px-2.5 rounded-lg text-[10px] font-black stopwatch-flashing shadow-lg w-[70px] active:scale-95" : "h-9 px-2.5 rounded-lg text-[10px] font-black bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/30 w-[70px] active:scale-95";
 
         setsHtml += `
           <div class="flex items-center justify-between gap-2 p-2.5 rounded-xl ${done ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-zinc-900/60 border border-zinc-800'}">
@@ -665,18 +741,19 @@
             <div class="flex items-center gap-1.5 flex-1 justify-end">
               ${!ex.isTimeBased ? `
               <div class="flex items-center bg-zinc-900 rounded-lg border border-zinc-700 h-9">
-                <button onclick="chgVal('${ex.id}',${s},'w',-${ex.weightStep})" class="px-2.5 h-full text-zinc-400 active:text-white">-</button>
-                <input type="number" id="w-${ex.id}-${s}" value="${valW}" class="w-10 bg-transparent text-center text-sm font-black text-white focus:outline-none [appearance:textfield]">
-                <span class="text-[9px] text-zinc-500 pr-2 font-bold">kg</span>
-                <button onclick="chgVal('${ex.id}',${s},'w',${ex.weightStep})" class="px-2.5 h-full text-zinc-400 active:text-white">+</button>
-              </div>` : ''}
+                <button onclick="chgVal('${ex.id}',${s},'w',-1)" class="px-2.5 h-full text-zinc-400 active:text-white active:bg-zinc-800 rounded-l-lg transition-colors">-</button>
+                <input type="number" inputmode="decimal" pattern="[0-9]*" id="w-${ex.id}-${s}" value="${valW}" onchange="updateVal('${ex.id}',${s},'w',this.value)" class="w-10 bg-transparent text-center text-sm font-black text-white focus:outline-none appearance-none border-x border-zinc-800/50 m-0">
+                <button onclick="chgVal('${ex.id}',${s},'w',1)" class="px-2.5 h-full text-zinc-400 active:text-white active:bg-zinc-800 rounded-r-lg transition-colors">+</button>
+              </div><span class="text-[9px] text-zinc-500 font-bold -ml-0.5">kg</span>` : ''}
+              
               <div class="flex items-center bg-zinc-900 rounded-lg border border-zinc-700 h-9">
-                <button onclick="chgVal('${ex.id}',${s},'r',${ex.isTimeBased ? -5 : -1})" class="px-2.5 h-full text-zinc-400 active:text-white">-</button>
-                <input type="number" id="r-${ex.id}-${s}" value="${valR}" class="w-8 bg-transparent text-center text-sm font-black text-white focus:outline-none [appearance:textfield]">
-                <span class="text-[9px] text-zinc-500 pr-2 font-bold">${ex.isTimeBased ? '秒' : '下'}</span>
-                <button onclick="chgVal('${ex.id}',${s},'r',${ex.isTimeBased ? 5 : 1})" class="px-2.5 h-full text-zinc-400 active:text-white">+</button>
-              </div>
-              ${ex.isTimeBased && !done ? `<button onclick="${isThisTimerRunning ? 'utStop()' : `utStart('set', ${valR}, { exId: '${ex.id}', setNum: ${s}, title: '${ex.name} Set ${s}' })`}" class="${btnClass}">${btnTxt}</button>` : ''}
+                <button onclick="chgVal('${ex.id}',${s},'r',-1)" class="px-2.5 h-full text-zinc-400 active:text-white active:bg-zinc-800 rounded-l-lg transition-colors">-</button>
+                <input type="number" inputmode="numeric" pattern="[0-9]*" id="r-${ex.id}-${s}" value="${valR}" onchange="updateVal('${ex.id}',${s},'r',this.value)" class="w-8 bg-transparent text-center text-sm font-black text-white focus:outline-none appearance-none border-x border-zinc-800/50 m-0">
+                <button onclick="chgVal('${ex.id}',${s},'r',1)" class="px-2.5 h-full text-zinc-400 active:text-white active:bg-zinc-800 rounded-r-lg transition-colors">+</button>
+              </div><span class="text-[9px] text-zinc-500 font-bold -ml-0.5">${ex.isTimeBased ? '秒' : '下'}</span>
+              
+              ${ex.isTimeBased && !done ? `<button onclick="${isThisTimerRunning ? 'utStop()' : `utStart('stopwatch', 0, { exId: '${ex.id}', setNum: ${s}, title: '${ex.name} Set ${s}' })`}" class="${btnClass}">${btnTxt}</button>` : ''}
+              
               <button onclick="${done ? `unlogSet('${ex.id}',${s})` : `logSet('${ex.id}',${s}, false)`}" class="w-10 h-9 rounded-lg flex items-center justify-center active:scale-95 transition-all ${done ? 'bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/20' : 'bg-zinc-700 text-zinc-400 hover:bg-zinc-600'}">
                 <i class="fa-solid ${done ? 'fa-check' : 'fa-square'} text-sm"></i>
               </button>
@@ -684,11 +761,7 @@
           </div>`;
       }
 
-      card.innerHTML = `
-        <div class="p-4 border-b border-zinc-750 bg-gradient-to-r from-zinc-800 to-zinc-850">
-          <div class="flex justify-between items-start"><div class="w-full"><span class="text-[10px] bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 px-2 py-0.5 rounded-full font-bold tracking-wide">${ex.target}</span><h3 class="text-base font-black text-zinc-100 mt-2">${ex.name}</h3></div></div>
-          <div class="mt-3 bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1.5 rounded-lg text-[10px] flex items-center gap-1.5 font-mono shadow-inner"><i class="fa-solid fa-clock-rotate-left text-[9px]"></i> <span class="text-emerald-300 font-bold">${lastPerfStr}</span></div>
-        </div>
+      card.innerHTML = cardHeaderHtml + `
         <div class="bg-zinc-800/30">
           <div class="p-4 flex items-start gap-4">
             <div class="w-20 h-20 bg-zinc-900 rounded-xl p-1.5 border border-zinc-700/50 flex items-center justify-center shadow-inner shrink-0 relative overflow-hidden"><div class="absolute inset-0 bg-emerald-500/5 blur-xl"></div>${svgStr}</div>
@@ -697,16 +770,23 @@
           <div class="px-4 pb-2">
             <details class="group bg-zinc-900 border border-zinc-800 rounded-lg">
               <summary class="text-[11px] text-amber-400 font-bold cursor-pointer list-none flex items-center justify-between p-3">
-                <span><i class="fa-solid fa-chalkboard-user mr-1 text-base align-middle"></i> 教練指導：發力細節與致命錯誤</span><i class="fa-solid fa-chevron-down text-[10px] group-open:rotate-180 transition-transform"></i>
+                <span><i class="fa-solid fa-chalkboard-user mr-1 text-base align-middle"></i> 訓練細節與注意事項</span><i class="fa-solid fa-chevron-down text-[10px] group-open:rotate-180 transition-transform"></i>
               </summary>
               <div class="px-3 pb-3 text-[11.5px]"><ul class="space-y-3 pt-2 border-t border-zinc-800">${tipsHtml}</ul></div>
             </details>
           </div>
-          <div class="px-4 py-2 space-y-2 pb-4">
-            ${setsHtml}
+          <div class="px-4 py-2 pb-4">
+            <div class="mb-3 bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-2 rounded-lg text-xs flex items-center justify-center gap-2 font-mono shadow-inner">
+                <i class="fa-solid fa-clock-rotate-left"></i> <span class="text-emerald-300 font-bold">${lastPerfStr}</span>
+            </div>
+            
+            <div class="space-y-2">
+                ${setsHtml}
+            </div>
+            
             <div class="flex justify-end gap-2 pt-3 border-t border-zinc-700/50 mt-3">
-              ${sets > 1 ? `<button onclick="adjSets('${ex.id}', -1)" class="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-850 border border-zinc-750 text-zinc-400 text-[10px] font-bold rounded-lg flex items-center gap-1 active:scale-95"><i class="fa-solid fa-minus text-[8px]"></i> 減一組</button>` : ''}
-              <button onclick="adjSets('${ex.id}', 1)" class="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-emerald-400 text-[10px] font-black rounded-lg flex items-center gap-1 active:scale-95"><i class="fa-solid fa-plus text-[8px]"></i> ➕ 加一組</button>
+              ${sets > 1 ? `<button onclick="adjSets('${ex.id}', -1)" class="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-850 border border-zinc-750 text-zinc-400 text-[10px] font-bold rounded-lg flex items-center gap-1 active:scale-95"><i class="fa-solid fa-minus text-[8px]"></i> 減少</button>` : ''}
+              <button onclick="adjSets('${ex.id}', 1)" class="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-emerald-400 text-[10px] font-black rounded-lg flex items-center gap-1 active:scale-95"><i class="fa-solid fa-plus text-[8px]"></i> 增加</button>
             </div>
           </div>
         </div>`;
@@ -718,12 +798,12 @@
     function nextStation() {
       const activeIds = assignedRoutines[currentDay] || [];
       if (currentStationIndex < activeIds.length - 1) { currentStationIndex++; renderWorkout(); } 
-      else { showToast("🎉 恭喜！你已經完成今日所有課表！"); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); }
+      else { showToast("今日課表已完成。"); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); }
     }
     function switchDay(d) {
       currentDay = d; currentStationIndex = 0; 
       ['A','B','C'].forEach(x => { document.getElementById(`btn-day-${x}`).className = x===d ? "flex-1 py-2 text-center text-xs font-black rounded-lg bg-emerald-500 text-zinc-950 shadow-md" : "flex-1 py-2 text-center text-xs font-black rounded-lg text-zinc-400 hover:text-zinc-200"; });
-      utStop(); document.getElementById('day-title').innerText = { 'A': '課表 A — 推 + 下半身', 'B': '課表 B — 拉 + 核心', 'C': '課表 C — 全身 + Cardio' }[d]; renderWorkout();
+      utStop(); document.getElementById('day-title').innerText = { 'A': '課表 A', 'B': '課表 B', 'C': '課表 C' }[d]; renderWorkout();
     }
 
     function chgVal(id, s, type, delta) {
@@ -734,9 +814,18 @@
         if(type==='w') activeInputs[`${id}-${s}`].weight = n; else activeInputs[`${id}-${s}`].reps = n;
       }
     }
+    
+    function updateVal(id, s, type, val) {
+      if(val === '') return;
+      let n = parseFloat(val) || 0;
+      activeInputs[`${id}-${s}`] = activeInputs[`${id}-${s}`] || {weight:0, reps:0};
+      if(type === 'w') activeInputs[`${id}-${s}`].weight = n; 
+      else activeInputs[`${id}-${s}`].reps = n;
+    }
+
     function adjSets(id, d) {
       exerciseSetsCount[id] = Math.max(1, (exerciseSetsCount[id] || 3) + d);
-      saveData(); renderWorkout(); showToast(`已調整為 ${exerciseSetsCount[id]} 組`);
+      saveData(); renderWorkout(); showToast(`組數已調整`);
     }
 
     function logSet(exId, s, isAuto = false) {
@@ -744,12 +833,12 @@
       const wEl = document.getElementById(`w-${exId}-${s}`); const rEl = document.getElementById(`r-${exId}-${s}`);
       workoutLogs[d][exId] = workoutLogs[d][exId].filter(x => x.set !== s);
       workoutLogs[d][exId].push({set: s, weight: wEl ? parseFloat(wEl.value) : 0, reps: rEl ? parseInt(rEl.value) : 0});
-      saveData(); showToast('✅ 記錄成功'); renderWorkout();
+      saveData(); showToast('記錄成功。'); renderWorkout();
 
       const pool = getFullPool(); const ex = pool.find(e => e.id === exId);
       const reqSets = (ex && (ex.isWarmup || ex.isHiit)) ? 1 : (exerciseSetsCount[exId] || (ex ? ex.sets : 3));
 
-      if (!isAuto && ex && !ex.isWarmup && !ex.isHiit) { utStart('rest', 60, { title: '深呼吸準備下一組' }); }
+      if (!isAuto && ex && !ex.isWarmup && !ex.isHiit && !ex.isTimeBased) { utStart('rest', 60, { title: '準備下一組' }); }
       if (s >= reqSets) {
          const activeIds = assignedRoutines[currentDay] || [];
          if (currentStationIndex < activeIds.length - 1) setTimeout(() => { nextStation(); }, 800);
@@ -760,9 +849,6 @@
       if(workoutLogs[d] && workoutLogs[d][exId]) { workoutLogs[d][exId] = workoutLogs[d][exId].filter(x => x.set !== s); saveData(); renderWorkout(); }
     }
 
-    // ==========================================
-    // 🤖 API Key 面板 (升級為 2.5 系列)
-    // ==========================================
     function openApiKeyModal() {
       document.getElementById('input-api-key').value = localStorage.getItem('gym_coach_api_key') || "";
       document.getElementById('input-ai-model').value = localStorage.getItem('gym_coach_ai_model') || "gemini-2.5-flash";
@@ -776,21 +862,17 @@
       const model = document.getElementById('input-ai-model').value;
 
       if(key) { 
-        if(!key.startsWith('AIza')) { return showToast("⚠️ 警告：金鑰必須以「AIza」開頭！", true); }
         localStorage.setItem('gym_coach_api_key', key); 
         localStorage.setItem('gym_coach_ai_model', model); 
-        showToast("🔑 金鑰及模型已成功儲存！"); 
+        showToast("設定已儲存。"); 
       } 
       else { 
         localStorage.removeItem('gym_coach_api_key'); 
-        showToast("已清除金鑰，轉為 Demo 模式。"); 
+        showToast("API Key 已移除。"); 
       }
       closeApiKeyModal();
     }
 
-    // ==========================================
-    // 🤖 AI 教練核心 (完美對接 Gemini 2.5)
-    // ==========================================
     async function callGeminiAI(userQuery) {
       let apiKey = localStorage.getItem('gym_coach_api_key') || ""; 
       let aiModel = localStorage.getItem('gym_coach_ai_model') || "gemini-2.5-flash";
@@ -799,7 +881,7 @@
       if (!apiKey) {
         return new Promise(resolve => {
           setTimeout(() => {
-            resolve({ reply: "【Demo 模式】請撳右上角 🔑 填寫專屬金鑰解鎖 AI。", action: "none", params: {} });
+            resolve({ reply: "[提示] 請先於右上角設定 API Key。", action: "none", params: {} });
           }, 800);
         });
       }
@@ -812,7 +894,6 @@
         generationConfig: { responseMimeType: "application/json" } 
       };
 
-      // 支援最新的 Gemini 2.5 系統指令寫法
       if (aiModel.includes('1.5') || aiModel.includes('2.')) {
           payload.systemInstruction = { parts: [{ text: sysInstruction }] };
       } else {
@@ -820,24 +901,20 @@
       }
 
       try {
-        const res = await fetch(url, { 
-          method: "POST", 
-          headers: { "Content-Type": "application/json" }, 
-          body: JSON.stringify(payload) 
-        });
+        const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
         
         if (!res.ok) {
            const errText = await res.text();
            let errorDetail = errText;
            try { const errJson = JSON.parse(errText); errorDetail = errJson.error ? errJson.error.message : errText; } catch(e) {}
-           throw new Error(`[${res.status}] ${errorDetail}`);
+           throw new Error(`${res.status} - ${errorDetail}`);
         }
         
         const data = await res.json(); 
         if (data.candidates && data.candidates[0] && data.candidates[0].content) {
             return JSON.parse(data.candidates[0].content.parts[0].text);
         } else {
-            throw new Error("Invalid response format: " + JSON.stringify(data));
+            throw new Error("Invalid response format");
         }
 
       } catch (error) {
@@ -853,7 +930,7 @@
       chatBox.scrollTop = chatBox.scrollHeight;
       
       const loaderId = 'loader-' + Date.now();
-      chatBox.innerHTML += `<div id="${loaderId}" class="bg-zinc-800 text-zinc-400 border border-zinc-750 max-w-[85%] rounded-2xl rounded-tl-none p-3 self-start shadow"><i class="fa-solid fa-spinner animate-spin"></i> 阿聰思考中...</div>`;
+      chatBox.innerHTML += `<div id="${loaderId}" class="bg-zinc-800 text-zinc-400 border border-zinc-750 max-w-[85%] rounded-2xl rounded-tl-none p-3 self-start shadow"><i class="fa-solid fa-spinner animate-spin"></i> 思考中...</div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
       
       try {
@@ -861,16 +938,13 @@
         document.getElementById(loaderId).remove();
         chatBox.innerHTML += `<div class="bg-zinc-800 text-zinc-100 border border-zinc-750 max-w-[85%] rounded-2xl rounded-tl-none p-3 self-start shadow leading-relaxed">${res.reply}</div>`;
         if (res.action === 'updateBodyStats' && res.params.weight) { document.getElementById('input-weight').value = res.params.weight; saveBodyStats(); }
-        else if (res.action === 'logSet') { showToast("教練已幫你紀錄！"); }
+        else if (res.action === 'logSet') { showToast("記錄已儲存。"); }
       } catch(e) {
         document.getElementById(loaderId).remove();
         chatBox.innerHTML += `
           <div class="bg-zinc-800 text-red-400 border border-red-900 max-w-[85%] rounded-2xl p-3 self-start leading-relaxed">
-            ⚠️ 系統偵測到以下錯誤：<br>
+            發生錯誤：<br>
             <div class="bg-black/50 p-2 rounded mt-2 text-[10px] font-mono break-words opacity-80">${e.message}</div>
-            <div class="mt-2 text-[11px] text-zinc-400">
-              💡 <b>解決方法：</b>請撳右上角 🔑 圖案，將「AI 模型」轉做 <b>Gemini 2.5 Flash</b> 再試一次！
-            </div>
           </div>`;
       }
       chatBox.scrollTop = chatBox.scrollHeight;
@@ -880,10 +954,9 @@
     function handleChatKeydown(e) { if(e.key === 'Enter') sendChatMessage(); }
     function navigateTab(tab) {
       document.querySelectorAll('.tab-section').forEach(t => t.classList.add('hidden'));
-      document.querySelectorAll('nav button').forEach(b => b.className = "flex flex-col items-center justify-center w-20 h-full text-zinc-400 hover:text-zinc-200 transition-colors");
+      document.querySelectorAll('nav button').forEach(b => b.className = "flex flex-col items-center justify-center flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-colors");
       document.getElementById(`tab-${tab}`).classList.remove('hidden');
-      document.getElementById(`nav-${tab}`).className = "flex flex-col items-center justify-center w-20 h-full text-emerald-400 transition-colors";
-      // 切換去 progress tab 嗰陣重新讀取資料
+      document.getElementById(`nav-${tab}`).className = "flex flex-col items-center justify-center flex-1 h-full text-emerald-400 transition-colors";
       if(tab === 'progress') { renderHistory(); renderBodyStats(); }
     }
 
